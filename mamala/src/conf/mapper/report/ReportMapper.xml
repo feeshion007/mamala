@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mamala.market.mapper.report.ReportMapper">
+	 
+     <select id="qryTotalList" resultType="com.mamala.market.pojo.report.BusinessTotalReport" parameterType="com.mamala.market.pojo.report.BusinessTotalReport">
+      SELECT sum(order_spend) totalSpend,sum(if(order_status=3,order_spend,0)) totalPaySpend,sum(order_discount) totalDiscount,sum(order_all_discount) totalAllDiscount,
+			sum(order_give) totalGive,
+			sum(if(order_status!=5,order_spend,0)) totalShouldPay,
+			sum(if(order_status=5,order_spend,0)) totalCanel,
+			sum(if(ifleave=4,order_spend,0)) totalDebay,
+			sum(if(order_status=3,order_pay,0)) totalPaid,
+			sum(if(order_status=2||order_status=4,order_spend,0)) totalUnPay,
+			sum(if(order_status!=5,1,0)) totalOrderCount,
+			sum(if(order_status!=5,if(order_customer_count=0,1,order_customer_count),0)) totalCustomCount,
+			sum(if(order_status!=5,order_spend,0))/sum(if(order_status!=5,1,0)) avgOrderCost,
+			sum(if(order_status!=5,order_spend,0))/sum(if(order_status!=5,if(order_customer_count=0,1,order_customer_count),0)) avgCustomCoust
+		FROM `t_order`  where 1=1
+		<if test="startTime !=''">
+            and modify_time &gt; #{startTime}
+          </if>  
+          <if test="endTime !=''">
+            and modify_time &lt; #{endTime}
+          </if> 
+          <if test="storeId >0">
+            and store_id = #{storeId}
+          </if> 
+     </select>
+     
+     <select id="qryDayReportList" resultType="com.mamala.market.pojo.report.BusinessDayReport" parameterType="com.mamala.market.pojo.report.BusinessDayReport">
+      SELECT DATE_FORMAT(modify_time,'%y%m%d') day,sum(order_spend) totalMoney,sum(order_pay) payMoney,sum(if(order_status=4,order_spend,0)) debayMoney
+	     from t_order where 1=1
+	      <if test="startTime !=''">
+            and modify_time &gt; #{startTime}
+          </if>  
+          <if test="endTime !=''">
+            and modify_time &lt; #{endTime}
+          </if> 
+          <if test="storeId >0">
+            and store_id = #{storeId}
+          </if> 
+	  group by DATE_FORMAT(modify_time,'%y%m%d')
+     </select>
+     
+     <select id="qryEarnReportList" resultType="com.mamala.market.pojo.report.BusinessEarnReport" parameterType="com.mamala.market.pojo.report.BusinessDayReport">
+         SELECT sum(order_spend) totalMoney,sum(order_pay) payMoney,(select sum(if(a.isset=1,a.dish_unit_price,b.dish_cost)) totalCost from t_order_dish_detail a , t_dish b
+			where a.dish_id = b.dish_id 
+			and a.parent_detail_id=0 and dish_status=3
+			 <if test="startTime !=''">
+	            and modify_time &gt; #{startTime}
+	          </if>  
+	          <if test="endTime !=''">
+	            and modify_time &lt; #{endTime}
+	          </if> 
+	          <if test="storeId >0">
+	            and b.store_id = #{storeId}
+	          </if> 
+          ) costMoney
+				     from t_order  where ifpay=1
+		   <if test="startTime !=''">
+            and modify_time &gt; #{startTime}
+          </if>  
+          <if test="endTime !=''">
+            and modify_time &lt; #{endTime}
+          </if> 
+          <if test="storeId >0">
+            and store_id = #{storeId}
+          </if> 
+     </select>
+     
+     <select id="qryPayReportList" resultType="com.mamala.market.pojo.report.BusinessPayReport" parameterType="com.mamala.market.pojo.report.BusinessPayReport">
+       SELECT sum(if(a.ifleave !=4,b.real_pay_money,0)) totalPay,sum(if(a.ifleave =4,b.real_pay_money,0)) debayPay,sum(if(b.pay_type_id = 4 ,b.real_pay_money,0)) rechargePay
+         from t_member_pay_info b,t_order a where b.obj_id = a.order_id 
+		<if test="startTime !=''">
+          and a.modify_time &gt; #{startTime}
+        </if>  
+        <if test="endTime !=''">
+          and a.modify_time &lt; #{endTime}
+        </if> 
+        <if test="storeId >0">
+            and store_id = #{storeId}
+          </if> 
+     </select>
+     
+     <select id="qryCreditReportList" resultType="com.mamala.market.pojo.report.BusinessCreditReport" parameterType="com.mamala.market.pojo.report.BusinessCreditReport">
+        SELECT sum(if(a.ifleave =4,b.real_pay_money,0)) totalMoney
+         from t_member_pay_info b,t_order a where b.obj_id = a.order_id 
+		<if test="startTime !=''">
+          and a.modify_time &gt; #{startTime}
+        </if>  
+        <if test="endTime !=''">
+          and a.modify_time &lt; #{endTime}
+        </if> 
+        <if test="storeId >0">
+            and a.store_id = #{storeId}
+        </if> 
+     </select>
+     
+     <select id="qryDishReportList" resultType="com.mamala.market.pojo.report.BusinessDishReport" parameterType="com.mamala.market.pojo.report.BusinessDishReport">
+        select dish_name dishName ,count(1) totalCount,sum(if(dish_status=5,1,0)) totalBackCount,sum(if(ifgive=4,1,0)) totalGiveCount from t_order_dish_detail  where 1=1
+        <if test="startTime !=''">
+            and dish_create_time &gt; #{startTime}
+          </if>  
+          <if test="endTime !=''">
+            and dish_create_time &lt; #{endTime}
+          </if> 
+        group by dish_name
+     </select>
+      
+</mapper>

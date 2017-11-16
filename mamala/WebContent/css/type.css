@@ -1,0 +1,100 @@
+@CHARSET "UTF-8";
+
+/* 设置默认字体 */
+body, button, input, select, textarea, table{
+	 /* for ie */
+    font: 12px/1.2 "Microsoft YaHei", "\5fae\8f6f\96c5\9ed1", Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif; /* 用 ascii 字符表示，使得在任何编码下都无问题 */
+
+	color: #666666;
+}
+
+a, a:link, a:visited, a:hover, a:active {
+	color: #666666;
+
+	text-decoration: none;
+}
+
+a:active, a:focus {
+	outline:none;
+}
+
+img {
+	border: 0;
+}
+
+iframe {
+	width: 100%;
+	height: 100%;
+	
+	border: 0;
+	overflow: auto;
+}
+
+.blockOverlay {	
+  	opacity:0.6;
+	/** Mozilla */
+	-moz-opacity:0.6;
+	/** ie6/7 */
+	filter:alpha(opacity=60);
+
+	background-color:#d0d0d0;background:#d0d0d0\9;border:none;margin:0;padding:0;width:100%;height:100%;top:0;left:0;
+}
+
+iframe.overlay {
+	z-index: 1; 
+	
+	/** ie Mozilla */
+	opacity:0;
+	/** Mozilla5.3 */
+	-moz-opacity:0;
+	/** ie6/7 */
+	filter:alpha(opacity=0);
+  	
+	position: absolute; 
+	border: 0px; 
+	padding: 0px; 
+	margin: 0px; 
+	width: 100%; 
+	height: 100%; 
+	top: 0px; 
+	left: 0px;
+}
+
+.float_left {
+	float: left;
+}
+.float_right {
+	float: right;
+}
+
+/* 清除浮动 */
+.clear:after {
+	content: '\20'; 
+	display: block; 
+	height: 0; 
+	clear: both; 
+}
+
+.clear {
+	/** ie6/7 */
+	*zoom: 1;
+}
+
+.inline-block {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.inline-block {
+	/** ie6/7 */
+	*display: inline;
+}
+
+font.bold {
+	font-weight: bold;
+}
+
+/* 修正chrome下标题可能被裁切的问题 */
+.ui-dialog .ui-dialog-title {
+	line-height:normal;
+}

@@ -1,0 +1,110 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Mamala餐饮营销系统</title>
+
+		<link href="css/fieldSet.css" media="screen" rel="Stylesheet"
+			type="text/css">
+		<link href="css/message.css" media="screen" rel="Stylesheet"
+			type="text/css">
+		<link href="css/type.css" media="screen" rel="Stylesheet"
+			type="text/css">
+		<link href="css/login.css" media="screen" rel="Stylesheet"
+			type="text/css">
+        <script type="text/javascript" src="js/lib/jquery.min.js"></script>
+		<script type="text/javascript" src="js/lib/jquery.cookie.js"></script>
+		<script type="text/javascript" src="js/lib/jquery.md5.js"></script>
+		<script type="text/javascript" src="js/lib/sea.js"></script>
+		<script type="text/javascript" src="js/lib/seajs-config.js"></script>
+		<script type="text/javascript"><!--	
+	 //<![CDATA[
+		if (self.location != top.location) {
+			top.location = self.location;
+		}
+		if(navigator.userAgent.indexOf("MSIE")>0) { 
+		    window.attachEvent("onload", correctPNG);
+		}else if(isFirefox=navigator.userAgent.indexOf("Firefox")>0){ 
+		    window.addEventListener("onload", correctPNG);
+		}
+		jQuery(function() {
+			if (jQuery("#j_username").val() === "") {
+				jQuery("#j_username").focus();
+			} else {
+				jQuery("#j_password").focus();
+			}
+		});
+	//]]>
+	-->--></script>
+	</head>
+	<body>
+		<div class="all">
+
+			<div class="logo" style=" margin-left: -120px;padding-top:-10px">
+				<img src="img/logo.png" alt=""> 
+			</div>
+
+			<div class="login">
+				<div style='width: 40%; float: left; height: 200px; padding-top: 70px;color:fff;font-size:14px;  margin-left: -10px;text-align: right;'>
+					<div>
+						简便|灵活|赚大钱
+					</div>
+					<div style="margin-top:20px">
+						让餐饮管理更方便
+					</div>
+					<div style="margin-top:20px;margin-left:-176px;position:absolute">
+						点单、收银、打印、报表、会员、外卖功能，关键是帮你做营销
+					</div>
+				</div>
+				<div style='width:60%; float: right; height: 200px;padding-top:1px'>
+					<form method="post" action="">
+						<div class="inputfieldDiv"></div>
+						<div class="inputfield">
+							<div class="field inputname ">
+								<span class="input  ">
+									<div class="label">
+										<label class="inline-block" for="j_username">
+											<div class="inputnameLabel"></div>
+										</label>
+										<input id="user_txt" name="user_txt" type="text" value="" tabindex="1" placeholder="请输入用户名">
+									</div>
+								</span>
+							</div>
+							<div class="field inputpassword ">
+								<span class="input  ">
+									<div class="label">
+										<label class="inline-block" for="j_password">
+											<div class="passwordLabel"></div>
+										</label>
+										<input type="password" id="pass_txt" name="password" tabindex="2" placeholder="请输入密码">
+									</div>
+								</span>
+							</div>
+						</div>
+						<div class="tipmessage" style='margin-left: 30px; color: #ea5543;'>
+						</div>
+						
+						<div class="loginbotton">
+							<input id="login-btn" name="login-btn" type="button" value="登录"
+								class="ssmloginBtn login-btn">
+						</div>
+						</form>
+				</div>
+
+
+			</div>
+
+			<div class="messageCompatibility">
+				主要支持浏览器：IE 9.0+， Firefox 3.6+，Chrome 12.0+
+			</div>
+		</div>
+
+<script type="text/javascript">
+		if (window != top) {
+			top.location.href = location.href;
+		}
+		seajs.use('./js/login', function(login){
+			login.init();
+		});
+	</script>
+	</body>
+</html>

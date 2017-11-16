@@ -1,0 +1,34 @@
+<meta charset="UTF-8">  
+<script src="../js/lib/rui.grid.js"></script>
+<script src="../js/lib/rui.page.js"></script>
+<script src="../js/user-manage.js"></script>
+<script type="text/javascript" src="../js/lib/jquery.md5.js"></script>
+
+<div class="header">
+	<form id="search_form">
+	<label>帐号名：<input type="text" name="userName"></label>
+	<button type="submit" class="oper-btn"><i class="search"></i>搜索</button>
+	<button id="reply" type="reset" class="oper-btn"><i class="reply"></i>还原</button>
+	<span id="add_account" class="add-account-btn nrm-btn"><i class="cross">&#10010;</i>添加帐号</span>
+	</form>
+</div>
+<div id="user_panel" class="add-account">
+	<p class="account-header">添加帐号</p>
+	<form id="add_count_form"></form>
+	<div class="add-account-footer">
+		<button id="submit_account" class="oper-btn">确定</button><button id="cancle_user_panel" class="oper-btn">取消</button>
+	</div>
+</div>
+<div id="grid_dom"></div>
+<div id="grid_dom_page"></div>
+<div id="grid_tip" class="grid-tip"></div>
+<div id="user_tip_panel" class="user-tip"></div>
+<div id="msg" class="msg"></div>
+
+<script type="text/javascript">
+	seajs.use('./author/user-manage',function(umng){
+		$(function(){
+			umng.init();
+		});
+	})
+</script>

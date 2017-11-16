@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="melibrary.com.genuitec.eclipse.j2eedt.core.MYECLIPSE_JAVAEE_5_CONTAINER"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/aopalliance-1.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/bcprov-jdk16-1.46.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/com.springsource.edu.emory.mathcs.backport_3.1.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-codec-1.9.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-fileupload-1.3.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-httpclient-3.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-io-2.2.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-lang-2.4.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-lang3-3.4.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-logging-1.1.3.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/druid-1.0.14.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/fastjson-1.2.5.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jaxen-1.1.6.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/license-core-1.14.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mybatis-3.3.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mybatis-spring-1.2.2.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-5.1.34.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/open-client-1.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/poi-3.11.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/sigar-1.6.4.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/slf4j-log4j12-1.6.5.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/slf4j.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-aop-3.2.12.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-beans-3.2.12.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-context-3.2.12.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-core-3.2.12.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-expression-3.2.12.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-jdbc-3.2.12.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-tx-3.2.12.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-web-3.2.12.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-webmvc-3.2.12.RELEASE.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/tomcat-servlet-api-7.0.57.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xml-apis-1.0.b2.jar"/>
+	<classpathentry kind="lib" path="G:/work/mycode/mamala/trunk/market/WebContent/WEB-INF/lib/aspectjweaver-1.6.9.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/aspectjweaver-1.6.9.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="con" path="com.genuitec.runtime.library/com.genuitec.generic_5.0">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.web"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="com.genuitec.runtime.library/com.genuitec.jstl_1.2">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.web.jstl"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="WebContent/WEB-INF/classes"/>
+</classpath>

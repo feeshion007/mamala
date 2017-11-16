@@ -1,0 +1,400 @@
+
+<style>
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color:#fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #dedede;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+::selection {
+    color: #fff;
+    background-color: #08c;
+}
+
+    .desktop-box{height: 100%;width: 100%;} 
+	.desk-consumed-box{width: 100%;margin: 0 auto;display: none;margin-top:10px;}
+	.left-box{ height: 100%; width: 300px;border-right: 2px solid #ccc;box-sizing: border-box;}
+	.right-box{width: 960px;  height:98%;}
+	.box-title{z-index: 22; position: relative; font-size: 14px; font-weight: 800;height: 40px; line-height: 40px; padding-left: 20px; background-color: #e6e6e6;  border: solid 1px #ccc; margin-right: 2px;margin-left: 2px;}
+	.user-recipes-list{ height: 100%; margin-top: -42px;}
+	.user-consumed-aggregate{width: 50%;height: 40px;line-height: 40px;padding-left: 10px;box-sizing:border-box;}
+	.user-consumed-btn{width: 25%;text-align: center;}
+	.ui-menu { width: 292px;height: 100%;margin-left: 2px; }
+    .ui-widget-header { padding: 0.2em; }
+    .ui-menu-click{ 
+		font-weight: bold;
+		color: #eb8f00; 
+	}
+	.setting-box{
+		height: 100%;
+		margin-left: 5px;  
+		display:none
+	}
+	.setting-name{
+	    font-size: 17px;
+		font-weight: 800;
+		padding-bottom: 12px;
+		border-bottom: 1px solid rgb(0, 0, 0);
+		text-align: center;
+		margin-top: 67px;
+		border-top: dotted 1px #ccc; 
+		border-left: dotted 1px #ccc; 
+		border-right: dotted 1px #ccc;
+	}
+	.setting-title{
+		margin-top: 18px;
+		font-size: 15px;
+		font-weight: 800;
+		border-bottom: 1px solid rgb(0, 0, 0);
+		padding-bottom: 3px; 
+	}
+	.setting-tail{
+		border-top: 1px solid rgb(0, 0, 0);
+		font-size: 14px;
+		font-weight: 800; 
+		margin-top: 18px;
+	}
+	.setting-query-date{border-left: dotted 1px #ccc; border-right: dotted 1px #ccc;}
+	.setting-bottom{border-top: 1px solid rgb(0, 0, 0);border-left: dotted 1px #ccc; border-right: dotted 1px #ccc;}
+	.setting-content{margin-top:18px;margin-bottom:18px;border-left: dotted 1px #ccc; border-right: dotted 1px #ccc;}
+	.setting-list{margin-bottom:28px;}
+	.setting-center{margin-left:20px;}
+	.setting-tr span{margin: 0 20px;}
+	.setting-tail span{margin: 0 12px;} 
+	.new-type-row{border: none; border-bottom: solid 1px #1299ec;background: #ffc;height: 100%;width: 100%;}
+	.new-row{border: none; border-bottom: solid 1px #1299ec;background: #ffc;height: 100%;width: 100%;}
+	.dishTips{color:red}
+	.dataTables_filter{float:left}
+	.modal-body input {width:300px}
+    .modal-body select {width:300px;height:80px;}
+    .sui-dropup .caret::before, .sui-dropdown .caret::before {
+       content: "▼";
+     }
+      .sui-msg.msg-error > .msg-icon:before {
+	    content: "×";
+	}
+    .msg-error{
+	   height: 12px;
+       line-height: 10px;
+	   margin-left: -10px; 
+	}
+	.sui-form .help-inline {
+		position: fixed; 
+		margin-top: 0px;
+	}
+	.sui-form .help-inline { 
+	    margin-left: 1px; 
+	}
+</style>
+<div class='desktop-box clearfix'>
+	<div class='left-box fl'>
+		<div class='box-title'>设置项</div>
+		<div class='user-recipes-list'>
+		  <ul id="set-box-menu">    
+			  <li target="setting-store"  class="header" style="margin-top:41px;">门店权限管理</li>
+			  <li target="setting-staff">员工管理</li> 
+			  <li target="setting-print">打印机设置</li> 
+			</ul> 
+		</div>
+	</div>
+	<div class='right-box fr'> 
+		<div class='user-recipes-list' style="  margin-top:0px;border-top: solid 2px #dedede;">
+			<div class="setting-box" id="setting-store" style="padding-top: 10px;"> 
+				<div class='fr' style="position:absolute;margin-top: -7px;">
+					<a href="javascript:void(0);" data-toggle="modal" data-target="#edit-store-panel" data-keyboard="false"  style="background-color:#4cb9fc;color:#fff" class="sui-btn btn-bordered btn-xlarge btn-primary new-store-btn">新增门店</a>
+			    </div>
+			    <table id="setting-store-tb" class="display" cellspacing="0" width="100%">
+			        <thead>
+			            <tr>
+			                <th>门店编号</th>
+			                <th>门店名称</th>
+			                <th>门店等级</th>
+			                <th>门店地址</th>
+			                <th>联系人</th>
+			                <th>联系方式</th> 
+			                <th>营业时间</th> 
+			                <th>操作</th> 
+			            </tr>
+			        </thead> 
+			        <tbody> 
+			             
+			        </tbody>
+			    </table>
+			</div>  
+			<div class="setting-box" id="setting-staff" style="padding-top: 10px;">
+				 <div class='fr' style="position:absolute;margin-top: -7px;">
+					<a href="javascript:void(0);" data-toggle="modal" data-target="#edit-staff-panel" data-keyboard="false" style="background-color:#4cb9fc;color:#fff" class=" sui-btn btn-bordered btn-xlarge btn-primary new-staff-btn">新增员工</a>
+			    </div>
+			    <table id="setting-staff-tb" class="display" cellspacing="0" width="100%">
+				        <thead>
+				            <tr>
+				                <th >员工编号</th>
+				                <th>员工账号</th>
+				                <th>员工名称</th>
+				                <th>员工职位</th>
+				                <th>所属门店</th>
+				                <th>账号类型</th>
+				                <th>联系方式</th> 
+				                <th>操作</th> 
+				            </tr>
+				        </thead> 
+				        <tbody> 
+				            
+				        </tbody>
+				    </table>
+			</div>  
+			<div class="setting-pay" id="setting-container" style="display:block;padding-top: 40px;">
+			</div>  
+			<div class="setting-print" id="setting-container" style="display:block;padding: 10 140px;">
+			   <form class="sui-form form-horizontal sui-validate print-form" target="" style='margin-left:140px'>
+						<div class="control-group">
+							<label class="control-label" >
+								打印服务器IP：
+							</label>
+							<div class="controls">
+								<input type="text"  id="printer-ip" name="printIp" data-rules="required" placeholder="打印服务器IP" >
+								<input type="hidden"  id="ip_id" name="printIpId" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label  class="control-label">
+								打印机名称：
+							</label>
+							<div class="controls">
+								<input type="text"  id="print_name" name="printName" data-rules="required" placeholder="打印机名称" >
+								<input type="hidden"  id="print_attr_id" name="printNameId" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label  class="control-label">
+								后厨打印机名称：
+							</label>
+							<div class="controls">
+								<input type="text"  id="bprint_name" name="bprintName" data-rules="required" placeholder="后厨打印机名称" >
+								<input type="hidden"  id="bprint_attr_id" name="bprintNameId" >
+							</div>
+						</div> 
+						<div class="modal-footer">
+							<button type="button" data-ok="modal" class="sui-btn btn-primary btn-large edit-print-btn">保存</button> 
+					   </div>
+					</form>
+			</div>    
+		</div>
+	</div>
+</div>
+
+
+<div style="width:540px;margin-left:-300px;" id="edit-store-panel" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">门店管理</h4>
+      </div>
+      <div class="modal-body">
+				<div style="height: 360px;margin:6px 0px 0 40px">
+					<form class="sui-form form-horizontal sui-validate edit-store-form" target="">
+						<div class="control-group" style='display: none'>
+							<label class="control-label" >
+								门店编号：
+							</label>
+							<div class="controls">
+								<input type="text" disabled='true' id="store_id" name="storeId" placeholder="门店号自动生成" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label  class="control-label">
+								门店名称：
+							</label>
+							<div class="controls">
+								<input type="text"  id="store_name" name="storeName" data-rules="required|maxlength=25" placeholder="可输入门店名称" >
+							</div>
+						</div>
+						<div class="control-group">
+							 <label for="inputGender" class="control-label">门店等级：</label>
+						    <div class="controls">
+							      <span class="sui-dropdown dropdown-bordered select">
+								      <span class="dropdown-inner">
+									      <a  style="width:292px" role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
+										      <input  id="store_grade" name="grade"  value=0 type="hidden"><i class="caret"></i>
+										      <span class="grade-select-context">一般</span>
+									      </a>
+								          <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu grade-select-menu">
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="3">高</a></li>
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="2">较高</a></li>
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">一般</a></li>
+								          </ul>
+							          </span>
+						          </span>
+					         </div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">
+								负责人：
+							</label>
+							<div class="controls">
+								<input type="text" id="store_leader" name="leader" data-rules="required|maxlength=25" placeholder="可输入负责人名称" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">
+								联系方式：
+							</label>
+							<div class="controls">
+								<input type="text" id="store_phone" name="phone" data-rules="required|mobile" placeholder="可输入门店手机号" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">
+								门店地址：
+							</label>
+							<div class="controls">
+								<input type="text" id="store_address" name="address" placeholder="可输入门店地址" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">
+								营业开始时间：
+							</label>
+							 <div class="controls">
+								<input type="text" id="store_open" name="open" placeholder="例子  09:00" >
+							</div> 
+					   </div>
+					   <div class="control-group">
+							<label class="control-label">
+								营业结束时间：
+							</label>
+							 <div class="controls">
+								<input type="text" id="store_close" name="close" placeholder="例子  22:00" >
+							</div> 
+					   </div> 
+					</form>
+				</div>
+			</div>
+		   <div class="modal-footer">
+				<button type="button" data-ok="modal" class="sui-btn btn-primary btn-large edit-store-btn">保存</button> 
+				<button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+		   </div>
+    </div>
+  </div>
+</div>
+<!-- 结账弹出框 -->
+
+
+<div style="width:540px;margin-left:-300px;" id="edit-staff-panel" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">员工管理</h4>
+      </div>
+      <div class="modal-body">
+				<div style="height: 260px;margin:6px 0px 0 40px">
+					<form class="sui-form form-horizontal sui-validate edit-staff-form" target="">
+						<div class="control-group" style='display:none'>
+							<label class="control-label" >
+								员工编号：
+							</label>
+							<div class="controls">
+								<input type="text" disabled='true' id="staff_id" name="staffId" placeholder="员工号自动生成" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label  class="control-label">
+								员工名称：
+							</label>
+							<div class="controls">
+								<input type="text"  id="staff_name" name="staffName"  data-rules="required|maxlength=25" placeholder="可输入员工名称" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">
+								员工账号：
+							</label>
+							<div class="controls">
+								<input type="text" id="staff_account" name="staffAccount"  data-rules="required|name|maxlength=25" placeholder="可输入员工账号" >
+							</div>
+						</div>
+						 
+						<div class="control-group">
+							 <label for="inputGender" class="control-label">账号类型：</label>
+						    <div class="controls">
+							      <span class="sui-dropdown dropdown-bordered select">
+								      <span class="dropdown-inner">
+									      <a  style="width:292px" role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
+										      <input value=1 id="staff_type" name="staffType"  type="hidden"><i class="caret"></i>
+										      <span class="staffType-select-context">普通员工</span>
+									      </a>
+								          <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu staffType-select-menu"> 
+								            <li role="presentation"><a role="menuitem" class='stafftype-li-admin' tabindex="-1" href="javascript:void(0);" value="2">管理员</a></li>
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">普通用户</a></li> 
+								          </ul>
+							          </span>
+						          </span>
+					         </div>
+						</div>
+						<div class="control-group">
+							 <label for="inputGender" class="control-label">员工岗位：</label>
+						    <div class="controls">
+							      <span class="sui-dropdown dropdown-bordered select">
+								      <span class="dropdown-inner">
+									      <a  style="width:292px" role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
+										      <input  id="staff_role" name="staffRole"  type="hidden" value=3><i class="caret"></i>
+										      <span class="staffRole-select-context">员工</span>
+									      </a>
+								          <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu staffRole-select-menu">
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="4">店长</a></li>
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="3">员工</a></li>
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="2">收银</a></li>
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">快递</a></li>
+								            <li role="presentation"><a role="menuitem" class='role-li-admin' tabindex="-1" href="javascript:void(0);" value="0">管理员</a></li>
+								          </ul>
+							          </span>
+						          </span>
+					         </div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">
+								所属门店：
+							</label>
+							<div class="controls">
+								<input style="width:300px"  data-toggle="autocomplete" autocomplete="off" id="staff_store_name" name="storeName" placeholder="输入..." class="input-xlarge" type="text">
+								<input id="staff_store_id" name="storeId"   type="hidden"> 
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">
+								联系方式：
+							</label>
+							<div class="controls">
+								<input type="text" id="staff_phone" name="staffPhone" data-rules="required|phone" placeholder="可输入手机号" >
+							</div>
+						</div> 
+					</form>
+				</div>
+			</div>
+		   <div class="modal-footer">
+				<button type="button" data-ok="modal" class="sui-btn btn-primary btn-large edit-staff-btn">保存</button> 
+				<button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+		   </div>
+    </div>
+  </div>
+</div>
+<!-- 结账弹出框 -->
+
+
+<script type="text/javascript">
+	seajs.use('../js/setting',function(dk){
+		$(function(){
+			dk.init();
+		});
+	})
+</script>

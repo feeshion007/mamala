@@ -1,0 +1,135 @@
+@CHARSET "UTF-8";
+
+body {
+	background-color: #1a72bf;
+	margin-left: 0;
+	margin-top: 0;
+	overflow: auto;
+	background-image: url("../img/login/login_bj.png");
+    background-position:50% 90%;
+    background-repeat: no-repeat;
+}
+
+.all {
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 180px;
+	width: 534px;
+}
+
+.logo {
+	margin-left: auto;
+	margin-right: auto;
+	width: 219px;
+	height: 40px;
+}
+
+.login {
+	margin-top: 5px;
+	height: 200px; 
+}
+
+.logintipmessage {
+	margin-top: 10px;
+}
+.logintipmessage label {
+	margin-left:180px;
+	color: #FFFFFF;
+}
+.inputfieldDiv {
+	margin-left:auto;
+	margin-right: auto;
+	width:268px;
+	height:86px;
+	background-image: url('../img/login/input.png');
+}
+.inputfield {
+	margin-left:auto;
+	margin-right: auto;
+	width:268px;
+	height:86px;
+	margin-top:-86px;
+}
+
+.inputname {
+   padding-top:4px;
+}
+.inputpassword {
+}
+.inputfield input {
+	width: 214px;
+	height: 25px;
+	font-size: 12px;
+	line-height: 28px;
+	border: 0px;
+}
+
+.inputfield .field .label input {
+	margin-left:5px;
+	margin-top:2px;
+}
+.inputfield .field .label label {
+	width:41px;
+	height:38px;
+}
+
+.inputfield .field .label DIV {
+	margin-top:12px;
+	margin-left:12px;
+	height:19px;
+	width:19px;
+}
+.inputnameLabel {
+	background-image: url('../img/login/ico_user.png');
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+.passwordLabel {
+	background-image: url('../img/login/ico_password.png');
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+
+.loginbotton {
+	margin-top: 5px;
+	width: 268px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.ssmloginBtn {
+	width: 264px;
+	height: 38px;
+	margin-left: 4px;
+	
+	color: #ffffff;
+	font-weight: bold;
+	font-size: 14px;
+	
+	cursor: pointer;
+	border: 0px;
+	
+	background-image: url('../img/login_btn.png');
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-color: #0099ff;
+}
+
+.ssmloginBtn:HOVER {
+	font-size: 16px;
+	
+	background-image: url('../img/login/login_btn_over.png');
+	background-position: 0 0;
+	background-repeat: no-repeat;
+}
+.messageCompatibility {
+	margin-top: 180px;
+	color: #91B0DC;
+	text-align: center;
+}
+
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    background-color: rgb(250, 255, 189);
+    background-image: none;
+    color: rgb(0, 0, 0);
+}

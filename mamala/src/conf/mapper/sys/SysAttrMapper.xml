@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mamala.market.mapper.sys.SysAttrMapper">
+
+    <select id="qryForSysAttr" resultType="com.mamala.market.pojo.sys.SysAttr" parameterType="com.mamala.market.pojo.sys.SysAttr">
+  		SELECT id, attr,attr_name as attrName, attr_valve as attrValue from t_sys_status
+  		where attr=#{attr} and attr_type_id = #{attrTypeId}
+    </select>
+
+	<update id="updateSysAttr">
+        UPDATE t_sys_status
+        SET attr_valve = #{attrValue},
+        attr = #{attr} ,
+        attr_name=#{attrName},
+        attr_type_id = #{attrTypeId}
+  		where id =#{id}
+    </update>
+    
+    <insert id="addSysAttr" parameterType="com.mamala.market.pojo.sys.SysAttr"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO t_sys_status (attr, attr_name, attr_valve,attr_type_id,attr_type)
+        VALUES (#{attr}, #{attrName}, #{attrValue},#{attrTypeId},#{attrType})
+    </insert>
+</mapper>

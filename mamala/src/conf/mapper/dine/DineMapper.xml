@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mamala.market.mapper.dine.DineMapper">
+
+    <select id="findDineById" resultType="com.mamala.market.pojo.dine.Dine" parameterType="com.mamala.market.pojo.dine.Dine">
+  		SELECT dine_id dineId,dine_desk_id dineDeskId,dine_desk_name dineDeskName,customer_count customerCount,dine_status dineStatus,spend_money spendMoney,
+  		remarks,dine_start_time dineStartTime,dine_end_time dineEndTime,dine_give_money dineGiveMoney,dine_discount_money dineDiscountMoney,dine_pay_money dinePayMoney,
+  		dine_ispay dineIspay,user_id userId,card_number cardNumber,phone,member_id memberId from t_dine
+  		where 1=1 
+  		and dine_id=#{dineId}  
+    </select>
+
+	<update id="updateDine" parameterType="com.mamala.market.pojo.dine.Dine">
+        UPDATE t_dine
+        SET modify_time = now()
+        <if test="dineDeskId > 0">
+           ,dine_desk_id = #{dineDeskId}
+        </if>
+        <if test="dineDeskName != ''">
+           ,dine_desk_name = #{dineDeskName}
+        </if>
+        <if test="customerCount > 0">
+           ,customer_count = #{customerCount}
+        </if>
+        <if test="dineStatus >0">
+           ,dine_status = #{dineStatus}
+        </if>
+        <if test="spendMoney >= 0">
+           ,spend_money = #{spendMoney}
+        </if>
+        <if test="remarks != ''">
+           ,remarks = #{remarks}
+        </if>
+        <if test="dineStartTime != ''">
+           ,dine_start_time = #{dineStartTime}
+        </if>
+        <if test="dineEndTime != ''">
+           ,dine_end_time = #{dineEndTime}
+        </if>
+        <if test="dineGiveMoney >0 ">
+           ,dine_give_money = #{dineGiveMoney}
+        </if>
+        <if test="dineDiscountMoney >0 ">
+           ,dine_discount_money = #{dineDiscountMoney}
+        </if>
+        <if test="dinePayMoney > 0">
+           ,dine_pay_money = #{dinePayMoney}
+        </if>
+        <if test="dineIspay == 1 || dineIspay==-1">
+           ,dine_ispay = #{dineIspay}
+        </if>
+        <if test="userId > -1">
+           ,user_id = #{userId}
+        </if>
+        <if test="cardNumber != ''">
+           ,card_number = #{cardNumber}
+        </if>
+        <if test="phone != ''">
+           ,phone = #{phone}
+        </if>
+        <if test="dineDeskAlias != ''">
+           ,dine_desk_alias = #{dineDeskAlias}
+        </if> 
+        <if test="memberId != ''">
+           ,member_id = #{memberId}
+        </if> 
+  		where dine_id=#{dineId}
+    </update>
+    
+    <insert id="addDine" parameterType="com.mamala.market.pojo.dine.Dine"
+            useGeneratedKeys="true" keyProperty="dineId" keyColumn="dine_id">
+        INSERT INTO t_dine (dine_desk_id,dine_desk_name,customer_count,dine_status,spend_money,remarks,dine_start_time,dine_end_time,dine_give_money,dine_discount_money,dine_pay_money,dine_ispay,user_id,store_id,card_number,phone,member_id,create_time,modify_time)
+        VALUES (#{dineDeskId},#{dineDeskName},#{customerCount} , #{dineStatus} ,#{spendMoney} , #{remarks} , #{dineStartTime} ,#{dineEndTime} ,#{dineGiveMoney}  ,#{dineDiscountMoney} ,#{dinePayMoney} ,#{dineIspay} ,#{userId} ,#{storeId} ,#{cardNumber}  ,#{phone}  ,#{memberId} ,now(), now())
+    </insert>
+    
+    <delete id="deleteDine">
+        DELETE FROM t_dine
+        WHERE dine_id = #{dineId}
+    </delete>
+    
+    <select id="findTableById" resultType="com.mamala.market.pojo.dine.DineTable" parameterType="com.mamala.market.pojo.dine.DineTable">
+  		SELECT table_id tableId,table_name tableName,table_alias tableAlias,table_seats tableSeats,table_status tableStatus,current_cost currentCost,current_dine_id currentDineId,modify_time modifyTime from t_dine_table
+  		where 1=1   
+           and table_id = #{tableId}
+         <!-- if test="qryStore !=null and qryStore!=''">
+           and store_id = #{qryStore}
+        </if>  -->
+    </select>
+    
+    <select id="qryDineTableList" resultType="com.mamala.market.pojo.dine.DineTable" parameterType="com.mamala.market.pojo.dine.DineTable">
+  		SELECT a.table_id tableId,a.table_name tableName,a.table_alias tableAlias,a.table_seats tableSeats,a.table_status tableStatus,a.current_cost currentCost,a.current_dine_id currentDineId,a.current_customer_count currentCustomerCount,a.modify_time modifyTime,b.phone,b.member_id memberId from t_dine_table a LEFT JOIN t_dine b
+  		on  a.current_dine_id = b.dine_id
+  		<if test="qryStore !=null and qryStore!=''">
+           where a.store_id in (#{qryStore})
+        </if>
+  		order by a.table_id
+    </select>
+
+	<update id="updateDineTable" parameterType="com.mamala.market.pojo.dine.DineTable">
+        UPDATE t_dine_table
+        
+        SET  modify_time = now()
+        <if test="tableName != ''">
+           , table_name = #{tableName}
+        </if>
+         <if test="tableAlias != ''">
+           , table_alias = #{tableAlias}
+        </if>
+        <if test="tableSeats >0 ">
+           , table_seats = #{tableSeats}
+        </if>
+        <if test="tableStatus >0 ">
+           , table_status = #{tableStatus}
+        </if>
+        <if test="currentCost >=0 ">
+           , current_cost = #{currentCost}
+        </if>
+        <if test="currentDineId >=0 ">
+           , current_dine_id = #{currentDineId}
+        </if>  
+        <if test="currentCustomerCount >=0 ">
+           , current_customer_count = #{currentCustomerCount}
+        </if> 
+  		where table_id=#{tableId}
+    </update>
+    
+    <insert id="addDineTable" parameterType="com.mamala.market.pojo.dine.DineTable"
+            useGeneratedKeys="true" keyProperty="dineTypeId" keyColumn="dine_type_id">
+        INSERT INTO t_dine_table (table_name,table_alias,table_seats,table_status,current_cost,current_dine_id,user_id,store_id,create_time,modify_time)
+        VALUES (#{tableName} ,#{tableAlias} , #{tableSeats},#{tableStatus} , #{currentCost} , #{currentDineId} ,#{userId} ,#{storeId} ,now(), now())
+    </insert>
+    
+    <delete id="deleteDineTable">
+        DELETE FROM t_dine_table
+        WHERE table_id = #{tableId}
+    </delete>
+    
+</mapper>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruijie.rbis.mapper.preciseMarking.PreciseMarkingMapper">
+    <insert id="addCustomerFigure" parameterType="com.ruijie.rbis.pojo.preciseMarking.CustomerFigure"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO t_customer_figure_manage (tags, name, type, building_id, user_id)
+        VALUES (#{tags}, #{name}, #{type}, #{buildingId}, #{userId})
+    </insert>
+    <update id="updateCustomerFigure">
+        UPDATE t_customer_figure_manage
+        SET name = #{name}, type = #{type}, tags = #{tags}
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteCustomerFigure">
+        DELETE FROM t_customer_figure_manage
+        WHERE id = #{id}
+    </delete>
+
+    <select id="qryForTagList" resultType="com.ruijie.rbis.pojo.preciseMarking.CustomerTag">
+        SELECT
+            t1.building_id,
+            t1.tag_id AS id,
+            t2.name,
+            t2.description,
+            t1.group_id,
+            t1.type
+        FROM t_buildings_tags t1
+            LEFT OUTER JOIN t_customer_tag_info t2 ON t1.tag_id = t2.id
+        WHERE t1.building_id in (0, #{buildingId})
+        ORDER BY t1.type_index, t1.group_index
+    </select>
+
+    <select id="qryForCustomerFigure" resultType="com.ruijie.rbis.pojo.preciseMarking.CustomerFigure">
+        SELECT t1.id, t1.tags, t1.name, t1.type, t1.building_id as buildingId, t1.user_id as userId, t2.userName
+        from t_customer_figure_manage t1
+        LEFT OUTER JOIN t_rbis_user t2 on t1.user_id = t2.userID
+        where t1.type >= 0
+        <if test="userId != -1">
+            and t1.user_id = #{userId}
+        </if>
+        <if test="buildingId > 0">
+            and t1.building_id = #{buildingId}
+        </if>
+    </select>
+    <select id="qryCustomerFigureMacNum" resultType="java.lang.Integer">
+        SELECT count(*) FROM
+        (
+        SELECT mac FROM t_customer_tags
+        WHERE building_id=#{buildingId} and tag_id in
+        <foreach collection="tagValue" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        group by mac
+        having count(distinct type_index)=#{tagSize}
+        ) t
+    </select>
+    <select id="tagsWithFigureName" resultType="com.ruijie.rbis.pojo.preciseMarking.CustomerFigure">
+        SELECT *
+        FROM t_customer_figure_manage
+        WHERE name = #{figureName}
+    </select>
+    <select id="qryCustomerFigureMac" resultType="java.lang.String">
+        SELECT DISTINCT t2.mcp_mac as mac FROM t_customer_tags t1
+        INNER JOIN t_wmc_register_user t2
+        on t1.mac=t2.mac and t1.tag_id in
+        <foreach collection="tagValue" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="buildingId != -1">
+            and t1.building_id=#{buildingId}
+        </if>
+        group by t1.mac
+        having count(distinct t1.type_index)=#{tagSize}
+    </select>
+    <select id="qryTagMacNum" resultType="com.ruijie.rbis.pojo.preciseMarking.TagIdValue">
+        SELECT
+            tag_id,
+            count(DISTINCT mac) as value
+        FROM
+            t_customer_tags
+        WHERE
+            building_id = #{buildingId}
+            <if test="tagId != -1">
+                and tag_id=#{tagId}
+            </if>
+        GROUP BY
+            tag_id
+    </select>
+    <select id="qryCustomerFigureLoyalty"
+            resultType="com.ruijie.rbis.pojo.preciseMarking.CustomerFigureTypeValue">
+        SELECT cluster_id as type, count(*) as value from t_kmeans_static
+        where aptime="0000" and building_id=#{buildingId} and mac in
+        (
+        select mac from t_customer_tags where building_id=#{buildingId} and tag_id in
+        <foreach collection="tagValue" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        group by mac
+        having count(distinct type_index)=#{tagSize}
+        )
+        group by cluster_id
+    </select>
+    <select id="qryCustomerFigureBrand"
+            resultType="com.ruijie.rbis.pojo.preciseMarking.CustomerFigureTypeValue">
+        SELECT tag as type, count(*) as value from t_customer_interest
+        where level=0 and building_id=#{buildingId} and mac in
+        (
+        select mac from t_customer_tags where building_id=#{buildingId} and tag_id in
+        <foreach collection="tagValue" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        group by mac
+        having count(distinct type_index) = #{tagSize}
+        )
+        group by tag_id
+        order by value desc
+        limit 3
+    </select>
+    <select id="qryCustomerFigureInterest" resultType="com.ruijie.rbis.pojo.preciseMarking.CustomerFigureTypeValue">
+        SELECT tag as type, count(*) as value from  t_customer_interest
+        where level=2 and building_id=#{buildingId} and mac in
+        (
+        select mac from t_customer_tags where building_id=#{buildingId} and tag_id in
+        <foreach collection="tagValue" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        group by mac
+        having count(distinct type_index)=#{tagSize}
+        )
+        group by tag_id
+        order by value desc
+        limit 3
+    </select>
+    <select id="qryForWmcCustomerFigure" resultType="com.ruijie.rbis.pojo.preciseMarking.CustomerFigure">
+        SELECT t1.id, t1.tags, t1.name, t1.type, t1.building_id as buildingId, t1.user_id as userId
+        from t_customer_figure_manage t1
+        WHERE type!=0
+        <if test="buildingId != -1">
+            and t1.building_id=#{buildingId}
+        </if>
+    </select>
+    <select id="qryBrandInfo" resultType="com.ruijie.rbis.pojo.preciseMarking.BrandInfo">
+        SELECT *
+        FROM t_brand_info
+    </select>
+    <select id="qryBrandFigureMac" resultType="com.ruijie.rbis.pojo.preciseMarking.BrandFigureMac">
+        SELECT DISTINCT t2.mcp_mac as mac, t1.tag_rank as rank FROM t_customer_interest_prediction t1
+        INNER JOIN t_wmc_register_user t2
+        ON t1.tag_id=#{tagValue} and t1.mac=t2.mac
+        <if test="buildingId != -1">
+            and t1.building_id=#{buildingId}
+        </if>
+    </select>
+    <select id="qryRegisterTypeNum" resultType="com.ruijie.rbis.pojo.preciseMarking.RegisterTypeValue">
+        SELECT LENGTH(mobile) as type, count(DISTINCT mac) as value from t_wmc_register_user where mac in
+        (
+        SELECT mac FROM t_customer_tags WHERE building_id=#{buildingId} and tag_id in
+        <foreach collection="tagValue" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        group by mac
+        having count(distinct type_index)=#{tagSize}
+        )
+        group by type
+    </select>
+    <!--
+        <select id="qryRegisterCustomerMacNum"
+                resultType="com.ruijie.rbis.pojo.preciseMarking.CustomerFigureTypeValue">
+            SELECT auth_type, count(*) from t_wmc_register_mac from mac in
+            (
+                SELECT mac FROM t_customer_tags WHERE building_id=#{buildingId}
+                <foreach collection="tagValue" item="item" index="index" open="" separator=" " close="">
+                    and (tag_id_code &amp; #{item})>0
+                </foreach>
+            )
+            group by auth_type
+        </select>
+    -->
+
+</mapper>

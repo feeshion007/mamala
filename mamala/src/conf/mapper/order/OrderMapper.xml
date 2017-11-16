@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mamala.market.mapper.order.OrderMapper">
+	<resultMap id="AssociationSelectMap" type="com.mamala.market.pojo.order.Order" >  
+	    <id column="order_id" property="orderId" jdbcType="BIGINT" />  
+	    <result column="order_status" property="orderStatus" jdbcType="BIGINT" />  
+	    <result column="order_ticket_id" property="orderTicketId" jdbcType="BIGINT" />  
+	     <result column="order_ticket_name" property="orderTicketName" jdbcType="VARCHAR" /> 
+	    <result column="last_order_ticket_id" property="lastOrderTicketId" jdbcType="VARCHAR" />  
+	    <result column="order_customer_count" property="orderCustomerCount" jdbcType="INTEGER" />  
+	    <result column="order_waiter" property="orderWaiter" jdbcType="VARCHAR" /> 
+	    <result column="order_all_discount" property="orderAllDiscount" jdbcType="VARCHAR" /> 
+	    <result column="order_should_pay" property="orderShouldPay" jdbcType="VARCHAR" />  
+	    <result column="order_address" property="orderAddress" jdbcType="VARCHAR" />  
+	    <result column="order_buyer" property="orderBuyer" jdbcType="VARCHAR" />  
+	    <result column="order_corp_address" property="orderCorpAddress" jdbcType="VARCHAR" />  
+	    <result column="order_start_time" property="orderStartTime" jdbcType="VARCHAR" />  
+	    <result column="order_end_time" property="orderEndTime" jdbcType="VARCHAR" />  
+	    <result column="order_sender_id" property="senderUserId" jdbcType="BIGINT" />  
+	    <result column="order_sender_name" property="senderUserName" jdbcType="VARCHAR" />  
+	    <result column="user_id" property="userId" jdbcType="BIGINT" />  
+	    <result column="store_id" property="storeId" jdbcType="BIGINT" />  
+	    <result column="order_spend" property="orderSpend" jdbcType="FLOAT" />
+	    <result column="order_give" property="orderGive" jdbcType="FLOAT" />  
+	    <result column="order_discount" property="orderDiscount" jdbcType="FLOAT" />  
+	    <result column="order_pay" property="orderPay" jdbcType="FLOAT" />  
+	    <result column="ifpay" property="ifpay" jdbcType="INTEGER" />  
+	    <result column="ifleave" property="ifleave" jdbcType="INTEGER" />  
+	    <result column="phone" property="phone" jdbcType="VARCHAR" />  
+	    <result column="card_number" property="cardNumber" jdbcType="VARCHAR" />  
+	    <result column="member_id" property="memberId" jdbcType="BIGINT" />  
+	    <result column="create_time" property="createTime" jdbcType="VARCHAR" />  
+	    <result column="modify_time" property="modifyTime" jdbcType="VARCHAR" />    
+	    <result column="remarks" property="remaks" jdbcType="VARCHAR" /> 
+	    <collection property="orderDishes" column="order_id" select="qryOrderDishesByOrderId"></collection>
+	    <!-- collection property="orderDishes" column="order_id" javaType="ArrayList"  ofType="com.mamala.market.pojo.order.OrderDish"
+	      select="com.mamala.market.mapper.order.OrderMapper.qryOrderDishesByOrderId">
+	    </collection-->
+	</resultMap>  
+	<select id="qryOrderAndDetailList" resultMap="AssociationSelectMap" parameterType="com.mamala.market.pojo.order.Order" >  
+	    select * from t_order
+        where 1=1
+        <if test="orderId > 0">
+           and order_id = #{orderId}
+        </if>
+        <if test="orderTicketId > 0">
+           and order_ticket_id = #{orderTicketId}
+        </if>
+        <if test="orderNum !='' and orderNum !=null">
+           and order_num = #{orderNum}
+        </if>
+        <if test="orderType >0 ">
+           and order_type = #{orderType}
+        </if>
+        <if test="qryStore !='' and qryStore !=null">
+           and store_id in (#{qryStore})
+        </if>
+	</select>
+	
+	<select id="qryOrderByTicketId" resultType="com.mamala.market.pojo.order.Order"  parameterType="com.mamala.market.pojo.order.Order" >  
+	    select order_id orderId,order_num orderNum,order_corp_address orderCorpAddress,order_buyer orderBuyer,order_should_pay orderShouldPay,order_all_discount  orderAllDiscount,order_type orderType,order_status orderStatus,order_ticket_id orderTicketId,order_ticket_name orderTicketName,last_ticket_ticket_id lastTicketTicketId,order_customer_count orderCustomerCount,order_waiter orderWaiter,
+  		order_address orderAddress,order_start_time orderStartTime,order_end_time orderEndTime,order_sender_id orderSenderId,order_sender_name orderSenderName,
+  		user_id userId,order_spend orderSpend,order_give orderGive,order_discount orderDiscount,ifleave,order_pay orderPay,ifpay,phone,card_number cardNumber,member_id memberId,create_time createTime,modify_time modifyTime
+  		 from t_order
+        where 1=1 
+        <if test="orderTicketId > 0">
+           and order_ticket_id = #{orderTicketId}
+        </if>
+	</select>
+
+     <select id="qryOrderList" resultType="com.mamala.market.pojo.order.Order" parameterType="com.mamala.market.pojo.order.Order">
+  		SELECT order_id orderId,order_num orderNum,order_corp_address orderCorpAddress,order_buyer orderBuyer,order_corp_address orderCorpAddress,order_buyer orderBuyer,order_should_pay orderShouldPay,order_all_discount  orderAllDiscount,order_type orderType,order_status orderStatus,order_ticket_id orderTicketId,order_ticket_name orderTicketName,last_ticket_ticket_id lastTicketTicketId,order_customer_count orderCustomerCount,order_waiter orderWaiter,
+  		order_address orderAddress,order_start_time orderStartTime,order_end_time orderEndTime,order_sender_id orderSenderId,order_sender_name orderSenderName,
+  		user_id userId,order_spend orderSpend,order_give orderGive,order_discount orderDiscount,ifleave,order_pay orderPay,ifpay,phone,card_number cardNumber,member_id memberId,create_time createTime,modify_time modifyTime
+  		from t_order where 1=1  
+  		<if test="orderType > 0">
+           and order_type = #{orderType}
+        </if> 
+        <if test="qryStore !='' and qryStore !=null">
+           and store_id in (#{qryStore})
+        </if>
+  		 <if test="qryKey !=''">
+           and ((CASE order_status WHEN 1 THEN '开单' WHEN 2 THEN '未支付' WHEN 3 THEN '已付款' WHEN 4 THEN '挂单' ELSE '退单' END) like CONCAT('%','${qryKey}','%' ) or (CASE order_type WHEN 1 THEN '堂吃' ELSE '外卖' END) like CONCAT('%','${qryKey}','%' ) or order_ticket_name like CONCAT('%','${qryKey}','%' )  or order_num like CONCAT('%','${qryKey}','%' )  or order_status like CONCAT('%','${qryKey}','%' )  or order_ticket_id like CONCAT('%','${qryKey}','%' )  or last_ticket_ticket_id  like CONCAT('%','${qryKey}','%' )  or order_customer_count like CONCAT('%','${qryKey}','%' )  or order_waiter  like CONCAT('%','${qryKey}','%' )  or order_address like CONCAT('%','${qryKey}','%' )  or order_give  like CONCAT('%','${qryKey}','%' )  or order_discount  like CONCAT('%','${qryKey}','%' )  or order_pay like CONCAT('%','${qryKey}','%' ) )
+        </if>  
+        order by modify_time desc,create_time desc
+        <if test="length > 0">
+           limit #{start},#{length}
+        </if> 
+        
+     </select>
+     
+     <select id="orderCount" resultType="java.lang.Integer" parameterType="com.mamala.market.pojo.order.Order">
+  		SELECT count(*) from t_order where 1=1  
+  		 <if test="qryKey !=''">
+           and ((CASE order_status WHEN 1 THEN '开单' WHEN 2 THEN '未支付' WHEN 3 THEN '已付款' WHEN 4 THEN '挂单' ELSE '退单' END) like CONCAT('%','${qryKey}','%' ) or (CASE order_type WHEN 1 THEN '堂吃' ELSE '外卖' END) like CONCAT('%','${qryKey}','%' ) or order_ticket_name like CONCAT('%','${qryKey}','%' )  or  order_num like CONCAT('%','${qryKey}','%' )  or order_status like CONCAT('%','${qryKey}','%' )  or order_ticket_id like CONCAT('%','${qryKey}','%' )  or last_ticket_ticket_id  like CONCAT('%','${qryKey}','%' )  or order_customer_count like CONCAT('%','${qryKey}','%' )  or order_waiter  like CONCAT('%','${qryKey}','%' )  or order_address like CONCAT('%','${qryKey}','%' )  or order_give  like CONCAT('%','${qryKey}','%' )  or order_discount  like CONCAT('%','${qryKey}','%' )  or order_pay like CONCAT('%','${qryKey}','%' ) )
+        </if>   
+        <if test="qryStore !='' and qryStore !=null">
+           and store_id in (#{qryStore})
+        </if>
+     </select>
+
+     <select id="qryOrderByOrderId" resultType="com.mamala.market.pojo.order.Order" parameterType="com.mamala.market.pojo.order.Order">
+  		SELECT order_id orderId, order_num orderNum,order_corp_address orderCorpAddress,order_buyer orderBuyer,order_should_pay orderShouldPay,order_all_discount  orderAllDiscount,order_type orderType,order_status orderStatus,order_ticket_id orderTicketId,order_ticket_name orderTicketName,last_ticket_ticket_id lastTicketTicketId,order_customer_count orderCustomerCount,order_waiter orderWaiter,
+  		order_address orderAddress,order_start_time orderStartTime,order_end_time orderEndTime,order_sender_id orderSenderId,order_sender_name orderSenderName,
+  		user_id userId,order_spend orderSpend,order_give orderGive,order_discount orderDiscount,ifleave,order_pay orderPay,ifpay,phone,card_number cardNumber,member_id memberId,create_time createTime,modify_time modifyTime
+  		from t_order where 1=1  
+           and order_id = #{orderId}
+         
+  		 <!-- if test="qryKey !=''">
+           and (order_status = #{qryKey} or order_ticket  = #{qryKey} or last_order_ticket = #{qryKey} or order_customer_count = #{qryKey} or order_waiter  = #{qryKey} or order_address  = #{qryKey} or order_give = #{qryKey} or order_discount = #{qryKey} or order_pay = #{qryKey})
+        </if>  -->
+     </select>
+     
+	<update id="updateOrder" parameterType="com.mamala.market.pojo.order.Order">
+        UPDATE t_order
+        SET  modify_time = now()
+        <if test="orderNum != '' and orderNum != null ">
+           , order_num = #{orderNum}
+        </if>
+        <if test="orderType > 0">
+           , order_type = #{orderType}
+        </if>
+        <if test="orderStatus > 0">
+           , order_status = #{orderStatus}
+        </if>
+        <if test="orderTicketId > 0 ">
+           , order_ticket_id = #{orderTicketId}
+        </if>
+        <if test="orderTicketName != '' and orderTicketName != null ">
+           , order_ticket_name = #{orderTicketName}
+        </if>      
+        <if test="lastOrderTicketId >0 ">
+           , last_ticket_ticket_id = #{lastOrderTicketId}
+        </if>
+        <if test="orderCustomerCount > 0 ">
+           , order_customer_count = #{orderCustomerCount}
+        </if>
+        <if test="orderWaiter != '' and orderWaiter != null">
+           , order_waiter = #{orderWaiter}
+        </if>
+        <if test="orderSpend >=0">
+           , order_spend = #{orderSpend}
+        </if>
+        <if test="orderGive >= 0">
+           , order_give = #{orderGive}
+        </if> 
+        <if test="orderDiscount >= 0">
+           , order_discount = #{orderDiscount}
+        </if>
+        <if test="senderUserId > 0">
+           , order_sender_id = #{senderUserId}
+        </if>
+        <if test="senderUserName !='' and senderUserName !=null">
+           , order_sender_name = #{senderUserName}
+        </if>
+        <if test="orderPay >= 0">
+           , order_pay = #{orderPay}
+        </if>  
+        <if test="ifpay > 0">
+           , ifpay = #{ifpay}
+        </if>    
+        <if test="ifleave > 0">
+           , ifleave = #{ifleave}
+        </if>   
+        <if test="orderShouldPay > 0">
+           , order_should_pay = #{orderShouldPay}
+        </if>   
+        <if test="orderAllDiscount > 0">
+           , order_all_discount = #{orderAllDiscount}
+        </if> 
+        <if test="phone > 0">
+           , phone = #{phone}
+        </if>
+        <if test="memberId > 0">
+           , member_id = #{memberId}
+        </if>
+        <if test="cardNumber > 0">
+           , card_number = #{cardNumber}
+        </if>       
+          <if test="orderBuyer != '' and orderBuyer!= null ">
+           , order_buyer = #{orderBuyer}
+        </if>
+        <if test="orderCorpAddress != '' and orderCorpAddress != null ">
+           , order_corp_address = #{orderCorpAddress}
+        </if>  
+        <if test="remarks != '' and remarks != null">
+           , remarks = #{remarks}
+        </if> 
+  		where order_id=#{orderId}
+    </update>
+    
+    <insert id="addOrder" parameterType="com.mamala.market.pojo.order.Order"
+            useGeneratedKeys="true" keyProperty="orderId" keyColumn="order_id">
+        INSERT INTO t_order (order_num,order_buyer,order_corp_address,order_type,ifleave,order_status,order_ticket_id,order_ticket_name,last_ticket_ticket_id,order_customer_count,order_waiter,order_address,order_start_time,order_end_time,order_sender_id,order_sender_name,user_id,order_spend,order_give,order_discount,order_pay,ifpay,phone,card_number,member_id,store_id,create_time,modify_time)
+        VALUES (#{orderNum} ,#{orderBuyer} ,#{orderCorpAddress} ,#{orderType} ,1,#{orderStatus} ,#{orderTicketId},#{orderTicketName} , #{lastOrderTicketId},#{orderCustomerCount} , #{orderWaiter} ,#{orderAddress} , #{orderStartTime} ,#{orderEndTime} ,#{senderUserId} ,#{senderUserName} ,#{userId} ,#{orderSpend} , #{orderGive} ,#{orderDiscount} ,#{orderPay},#{ifpay},#{phone} ,#{cardNumber} , #{memberId}, #{storeId},now(), now())
+    </insert>
+    
+    <delete id="deleteOrder">
+        DELETE FROM t_order
+        WHERE order_id = #{orderId}
+    </delete>
+    
+    <select id="qryOrderDishesByOrderId" resultType="com.mamala.market.pojo.order.OrderDish" parameterType="com.mamala.market.pojo.order.OrderDish">
+  		SELECT order_dish_detail_id orderDishDetailId,old_detail_id oldDetailId,old_parent_detail_id oldParentDetailId,order_id orderId,dish_id dishId,parent_detail_id parentDetailId,dish_unit_count dishUnitCount,dish_unit dishUnit,dish_type_id dishTypeId,dish_name dishName,dish_status dishStatus,dish_total_price dishTotalPrice,dish_unit_price dishUnitPrice,dish_modify_time modifyTime,
+  		dish_storage dishStorage,member_id memberId,dish_create_time createTime,dish_order_time orderTime,dish_count dishCount,ifgive,iforder,isset,user_id userId,dish_need dishNeed
+  		 from t_order_dish_detail where 1=1  
+  		 and order_id=#{orderId}
+    </select>
+    
+    <select id="qryOrderDishByDetailId" resultType="com.mamala.market.pojo.order.OrderDish" parameterType="com.mamala.market.pojo.order.OrderDish">
+  		SELECT order_dish_detail_id orderDishDetailId,old_detail_id oldDetailId,old_parent_detail_id oldParentDetailId,order_id orderId,dish_id dishId,parent_detail_id parentDetailId,dish_unit_count dishUnitCount,dish_unit dishUnit,dish_type_id dishTypeId,dish_name dishName,dish_status dishStatus,dish_total_price dishTotalPrice,dish_unit_price dishUnitPrice,dish_modify_time modifyTime,
+  		dish_storage dishStorage,member_id memberId,dish_create_time createTime,dish_order_time orderTime,dish_count dishCount,ifgive,iforder,isset,user_id userId,dish_need dishNeed
+  		 from t_order_dish_detail where 1=1  
+  		 and order_dish_detail_id=#{detailId}
+    </select>
+    
+    <select id="qryOrderDishByOldDetailId" resultType="com.mamala.market.pojo.order.OrderDish" parameterType="com.mamala.market.pojo.order.OrderDish">
+  		SELECT order_dish_detail_id orderDishDetailId,old_detail_id oldDetailId,old_parent_detail_id oldParentDetailId,order_id orderId,dish_id dishId,parent_detail_id parentDetailId,dish_unit_count dishUnitCount,dish_unit dishUnit,dish_type_id dishTypeId,dish_name dishName,dish_status dishStatus,dish_total_price dishTotalPrice,dish_unit_price dishUnitPrice,dish_modify_time modifyTime,
+  		dish_storage dishStorage,member_id memberId,dish_create_time createTime,dish_order_time orderTime,dish_count dishCount,ifgive,iforder,isset,user_id userId,dish_need dishNeed
+  		 from t_order_dish_detail where 1=1  
+  		 and old_detail_id=#{oldDetailId}
+    </select>
+    
+    <select id="getOrderDishCountByParentId" resultType="java.lang.Integer" parameterType="com.mamala.market.pojo.order.Order">
+  		SELECT count(*) from t_order_dish_detail where 1=1  
+  		 <if test="parentDetailId > 0">
+           and parent_detail_id = #{parentDetailId}
+         </if>
+     </select>
+     
+     <select id="qryOrderDishByParentId" resultType="com.mamala.market.pojo.order.OrderDish" parameterType="com.mamala.market.pojo.order.Order">
+  		SELECT order_dish_detail_id orderDishDetailId,old_detail_id oldDetailId,old_parent_detail_id oldParentDetailId,order_id orderId,dish_id dishId,parent_detail_id parentDetailId,dish_unit_count dishUnitCount,dish_unit dishUnit,dish_type_id dishTypeId,dish_name dishName,dish_status dishStatus,dish_total_price dishTotalPrice,dish_unit_price dishUnitPrice,dish_modify_time modifyTime,
+  		dish_storage dishStorage,member_id memberId,dish_create_time createTime,dish_order_time orderTime,dish_count dishCount,ifgive,iforder,isset,user_id userId,dish_need dishNeed
+  		 from t_order_dish_detail where 1=1   
+  		 <if test="parentDetailId > 0">
+           and parent_detail_id = #{parentDetailId}
+         </if>
+     </select>
+     
+	<update id="updateOrderDish" parameterType="com.mamala.market.pojo.order.OrderDish">
+        UPDATE t_order_dish_detail
+        SET dish_modify_time = now()        
+        <if test="orderId > 0">
+           , order_id = #{orderId}
+        </if>
+        <if test="dishId >0 ">
+           , dish_id = #{dishId}
+        </if>
+        <if test="dishName != ''">
+           , dish_name = #{dishName}
+        </if>
+        <if test="dishStatus > 0">
+           , dish_status = #{dishStatus}
+        </if>
+        <if test="memberId > 0">
+           , member_id = #{memberId}
+        </if>
+        <if test="dishTotalPrice >= 0">
+           , dish_total_price = #{dishTotalPrice}
+        </if>
+        <if test="dishUnitPrice >= 0">
+           , dish_unit_price = #{dishUnitPrice}
+        </if>
+        <if test="dishCount >= 0">
+           , dish_count = #{dishCount}
+        </if>
+        <if test="dishStorage >= 0">
+           , dish_storage = #{dishStorage}
+        </if>
+        <if test="ifgive > 0">
+           , ifgive = #{ifgive}
+        </if>    
+        <if test="oldParentDetailId > 0">
+           , old_parent_detail_id = #{oldParentDetailId}
+        </if>  
+        <if test="iforder > 0">
+           , iforder = #{iforder}
+        </if> 
+        <if test="isset > 0">
+           , isset = #{isset}
+        </if> 
+        <if test="userId > 0">
+           , user_id = #{userId}
+        </if>     
+        <if test="dishNeed != ''">
+           , dish_need = #{dishNeed}
+        </if>  
+        <if test="orderTime !='' || orderTime!=null">
+           , dish_order_time = #{orderTime}
+        </if>  
+         <if test="parentDetailId > 0">
+           , parent_detail_id = #{parentDetailId}
+        </if>  
+         <if test="oldDetailId > 0">
+           , old_detail_id = #{oldDetailId}
+        </if>      
+        <if test="dishUnit !='' || dishUnit!=null">
+           , dish_unit = #{dishUnit}
+        </if>
+  		where order_dish_detail_id=#{orderDishDetailId}
+    </update>
+    
+    <insert id="addOrderDish" parameterType="com.mamala.market.pojo.order.OrderDish"
+            useGeneratedKeys="true" keyProperty="orderDishDetailId" keyColumn="order_dish_detail_id">
+        INSERT INTO t_order_dish_detail (order_id,dish_id,member_id,parent_detail_id,old_detail_id,old_parent_detail_id,dish_name,dish_unit_count,dish_unit,dish_status,dish_total_price,dish_unit_price,dish_modify_time,dish_create_time,dish_count,ifgive,iforder,isset,user_id,dish_need,dish_type_id)
+        VALUES (#{orderId} ,#{dishId} ,#{memberId} , #{parentDetailId},#{oldDetailId},#{oldParentDetailId},#{dishName},#{dishUnitCount},#{dishUnit},#{dishStatus} , #{dishTotalPrice} , #{dishUnitPrice} ,now(),now(),#{dishCount},#{ifgive},#{iforder},#{isset},#{userId},#{dishNeed},#{dishTypeId})
+    </insert>
+    
+    <delete id="deleteOrderDish">
+        DELETE FROM t_order_dish_detail
+        WHERE order_dish_detail_id = #{orderDishDetailId}
+    </delete> 
+    
+</mapper>

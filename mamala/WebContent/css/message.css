@@ -1,0 +1,204 @@
+@CHARSET "UTF-8";
+
+/** input message */
+.inputMessage {
+	border: 1px solid #E9BB02;
+	background-color: #FBF4CA;
+	
+	padding-top: 5px;
+	padding-right: 6px;
+	padding-bottom: 2px;
+	padding-left: 6px;
+	margin-left: 3px;
+	
+	color: #CF7500;
+
+	z-index: 100; 
+	
+	white-space: nowrap;
+}
+
+.inputError, input.inputError, input.inputError, area.inputError, textarea.inputError { 
+	border: 1px solid #fa584b;
+	
+	/** ie6 */
+	-background-image:expression(this.style.borderColor=this.disabled ? '#dbdbdb' : '#fa584b');
+}
+
+/** operation message */
+.message {
+	padding-top: 20px;
+	background-color: white;
+}
+
+.message .msgIco  {
+	float: left;
+
+	display: inline-block;
+	width: 64px;
+	height: 64px;
+
+	background-image: url("images/message/message_ico.png");
+	background-repeat: no-repeat;
+	
+	margin: 10px 40px;
+}
+
+.message .msgContent {
+	text-align: left;
+	margin-left: 110px;
+	
+	min-height: 70px;
+	/** ie6 */
+	-height: 70px;
+}
+
+.message .panelButton {	
+	height: 40px;
+	margin-right: auto;
+	margin-left: auto;
+	
+	text-align: center;
+}
+
+ul.message {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.dialog .message .title {
+	display: block;
+	font-weight: bold; 
+	font-size: 14px;
+}
+
+.message ul {
+	list-style: none;
+}
+
+.message .messageServrity {
+	font-size: 16px;
+	font-weight: bold;
+	text-align: left;
+	vertical-align: middle;
+
+	line-height: 32px;
+}
+
+.message .messageLink {
+	font-size: 12px;
+	font-weight: normal;
+	text-align: left;
+	
+	line-height: 24px;
+}
+
+.errorSeverityStyle  .msgIco {
+	background-position: 0 0;
+}
+
+.infoSeverityStyle  .msgIco {
+	background-position: 0 -64px;
+}
+
+.warnSeverityStyle  .msgIco {
+	background-position: -64px 0;
+}
+
+/** messageTip componet */
+dl.messageTip {
+	margin: 0;
+	
+	color: #f67017;
+
+	/** ie6/7 */
+	*zoom:1;
+}
+
+dl.messageTip dt {
+	background-image: url("images/message/ico_tip.gif"); 
+	background-position: left top;
+	background-repeat: no-repeat;
+	
+	min-height: 20px;
+	/** ie6 */
+	-height: 20px;
+	line-height: 20px;
+	text-indent: 20px;
+	
+	font-weight: bold;
+	
+	display: inline-block;
+	vertical-align: top;
+}
+
+dl.messageTip dt {
+	/** ie6/7 */
+	*display: inline;
+	/** ie6 */
+	-float: left;
+}
+
+dl.messageTip dt label {
+	background-image: url("images/message/colon.gif");
+	background-repeat: no-repeat;
+	background-position: right 5px;
+	
+	height: 20px;
+	padding-right: 6px;
+}
+
+dl.messageTip dd {
+	display: inline-block;
+}
+
+dl.messageTip dd {
+	/** ie6/7 */
+	*display: inline;
+	/** ie6 */
+	-float: left;
+}
+
+dl.messageTip dd ul li {
+	min-height: 20px;
+	/** ie6 */
+	-height: 20px;
+	line-height: 20px;
+	
+	text-indent: 12px;
+}
+
+/** for search tip */
+dl.searchMessageTip {
+	color: #52A5B0;
+	background: #F1FAFC;
+	border: 1px solid #D3D3D1;
+	padding-top: 13px;
+	padding-left: 13px;
+	height: 30px;
+	line-height: 18px;
+}
+
+dl.searchMessageTip dt {
+	background: url("images/message/tip_ico2.gif") no-repeat;
+	padding-left: 16px;
+	padding-right: 3px;
+	height: 16px;
+	
+	font-weight: bold;
+	
+	float: left;
+}
+
+dl.searchMessageTip dt label {
+	background-image: url("images/fieldSet/TipIcoColon.gif");
+	background-repeat: no-repeat;
+	background-position: right;
+	
+	padding-right: 18px;
+}
+
+dl.searchMessageTip dd {
+	float: left;
+}

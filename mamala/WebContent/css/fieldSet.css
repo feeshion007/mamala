@@ -1,0 +1,187 @@
+@CHARSET "UTF-8";
+
+/** fieldSet layout */
+.fieldSet {
+	margin: 0;
+}
+
+.fieldSet .field {
+	min-height: 30px;
+	/** ie6 */
+	-height: 30px;
+}
+
+.fieldSet.single .field {
+}
+
+.fieldSet.double .field {
+	width: 49.99999%;
+	
+	float: left;
+}
+
+.fieldSet.auto .field {
+	width: auto;
+	
+	float: left;
+}
+
+.fieldSet.double .singleLine, 
+.fieldSet.auto .singleLine  {
+	width: 100%;
+}
+
+/** reset input **/
+.fieldSet .label {
+	text-align: right;
+}
+.fieldSet .label, 
+.fieldSet .tip {
+	padding-top: 4px;
+	padding-left: 10px; 
+}
+.fieldSet .input {
+	padding: 3px 0 3px 0;
+	width: 150px;
+}
+
+.fieldSet input.text, 
+.fieldSet input.password {
+}
+
+.fieldSet area.textarea, 
+.fieldSet textarea.textarea {
+	width: 150px;
+	height: 50px;
+}
+
+.fieldSet .input table.radio,
+.fieldSet .input table.checkbox {
+	margin-top: 2px;
+}
+
+.fieldSet .input select.select {
+	margin-top: 1px;
+}
+
+.fieldSet .input input.checkbox {
+	margin-top: 2px;
+	/** ie6/7 */
+	*margin-top: auto;
+}
+
+.fieldSet .input table {
+	border-collapse: collapse;
+}
+
+.fieldSet .input table label {
+	line-height: normal;
+}
+
+.fieldSet .input table a {
+	line-height: normal;
+}
+
+.label-width-s .field .label {
+	min-width: 100px; /** IE7若用width会导致被裁切 **/
+}
+.label-width-m .field .label {
+	min-width: 120px; /** IE7若用width会导致被裁切 **/
+}
+.label-width-l .field .label {
+	min-width: 150px; /** IE7若用width会导致被裁切 **/
+}
+.label-width-xl .field .label {
+	min-width: 180px; /** IE7若用width会导致被裁切 **/
+}
+
+/** field  */
+.field {
+	vertical-align: top;
+}
+
+.field {
+}
+
+.field .inputSingleLine {
+}
+
+.field .label, .field .input, .field .tip {
+	display: table-cell;
+	*display: inline-block;
+}
+
+.field .label, .field .input, .field .tip {
+	/** ie6/7 */
+	*display: inline;
+}
+
+/** fix ie6/7 big text */
+.fieldSet .field .label {
+	*float: left;
+}
+
+.field .input {
+	*zoom: 1;
+}
+
+.field .label {
+	white-space: nowrap;
+	vertical-align: top;
+}
+
+.field .label span, .field .input > a {
+	line-height: 22px;
+}
+
+.field .label span {
+	/** ie6/7 */
+	*height: 22px;
+	*zoom: 1;
+	*vertical-align: top;
+	*line-height: 22px;
+}
+
+.field .label .space {
+	padding: 0 0 0 12px;
+}
+
+.field .label .required {
+	background-image: url("images/fieldSet/requried.gif");
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.field .label .labelColon {
+	background-image: url("images/fieldSet/IcoColon.gif");
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.field .input {
+}
+
+.field .input input, 
+.field .input img {
+	vertical-align: middle;
+}
+
+.field .input button.button, 
+.field .input input.button {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.field .input label {
+	line-height: 22px;
+	/** ie6/7 */
+	*vertical-align: top;
+}
+
+.field .tip {
+	line-height: 22px;
+	/** ie6/7 */
+	*vertical-align: middle;
+	
+	color: #f67017;
+}

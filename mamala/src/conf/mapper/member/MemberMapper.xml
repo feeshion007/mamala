@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mamala.market.mapper.member.MemberMapper">
+
+    <select id="qryMemberList" resultType="com.mamala.market.pojo.member.Member" parameterType="com.mamala.market.pojo.member.Member">
+  		SELECT member_id memberId,member_name memberName,group_id groupId,group_name groupName,card_number cardNumber,remain_money remainMoney,disabled,phone,sex,birthday,user_id userId,address,remarks,weixin from t_member
+  		where 1=1 
+  		<if test="qryStore !=null and qryStore!=''">
+           and store_id in (#{qryStore})
+        </if> 
+        <if test="qryKey!=null and qryKey!='' ">
+           and phone like CONCAT('%','${qryKey}','%' ) 
+        </if> 
+  		<if test="length > 0">
+           limit #{start},#{length}
+        </if>  
+    </select>
+    
+    <select id="qryMemberCount" resultType="java.lang.Integer" parameterType="com.mamala.market.pojo.member.Member">
+  		SELECT count(1) from t_member
+  		where 1=1 
+  		<if test="qryStore !=null and qryStore!=''">
+           and store_id in (#{qryStore})
+        </if> 
+        <if test="qryKey !=null and qryKey!=''">
+           and phone like CONCAT('%','${qryKey}','%' ) 
+        </if>   
+    </select>
+    
+    
+    <select id="qryMemberById" resultType="com.mamala.market.pojo.member.Member" parameterType="com.mamala.market.pojo.member.Member">
+  		SELECT member_id memberId,member_name memberName,group_id groupId,group_name groupName,card_number cardNumber,remain_money remainMoney,disabled,phone,sex,birthday,user_id userId,address,remarks,weixin from t_member
+  		where 1=1 
+  		<if test="memberId > 0">
+           and member_id = #{memberId}
+        </if>
+    </select> 
+    <select id="qryMemberListByCheck" resultType="com.mamala.market.pojo.member.Member" parameterType="com.mamala.market.pojo.member.Member">
+  		SELECT m.member_id memberId,m.member_name memberName,m.card_number,ISNULL(d.order_id) 'check',m.phone FROM (select * from t_order where order_type = 1 and (order_status=1 || order_status =2)) d right join t_member m
+        on d.member_id = m.member_id  where 1=1
+  		<if test="memberId > 0">
+           and m.member_id = #{memberId}
+        </if>
+        <if test="qryStore !=null and qryStore!=''">
+           and m.store_id in (#{qryStore})
+        </if> 
+    </select>
+    
+    <select id="hasChild" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+  		select count(1) hasChild from t_member_group where 1=1
+  		<if test="groupId > 0">
+           and up_group_id = #{groupId}
+        </if>
+        <if test="qryStore !=null and qryStore!=''">
+           and store_id in (#{qryStore})
+        </if> 
+    </select>
+    <select id="hasMember" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+  		select count(1) hasMember from t_member where 1=1
+  		<if test="groupId > 0">
+           and group_id = #{groupId}
+        </if>
+        <if test="qryStore !=null and qryStore!=''">
+            and store_id in (#{qryStore})
+        </if> 
+    </select>
+
+	<update id="updateMember" parameterType="com.mamala.market.pojo.member.Member">
+        UPDATE t_member
+        SET modify_time = now()
+        <if test="memberName !=null and memberName!='' ">
+           ,member_name = #{memberName}  
+        </if> 
+        <if test="groupId > 0">
+           , group_id = #{groupId} 
+        </if>
+        <if test="groupName !='' and groupName !=null">
+           , group_name = #{groupName} 
+        </if>
+        <if test="cardNumber > 0">
+           , card_number = #{cardNumber} 
+        </if>
+        <if test="remainMoney > 0">
+           , remain_money = #{remainMoney}  
+        </if> 
+        <if test="disabled > 0">
+           , disabled = #{disabled} 
+        </if>
+        <if test="phone !=null and phone!=''">
+           , phone = #{phone} 
+        </if>
+        <if test="sex > 0">
+           , sex = #{sex} 
+        </if>
+        <if test="birthday !=null and birthday!=''">
+           , birthday = #{birthday} 
+        </if>
+        <if test="userId > 0">
+           , user_id = #{userId} 
+        </if>
+        <if test="remarks !=null and remarks!=''">
+           , remarks = #{remarks} 
+        </if>
+        <if test="weixin !=null and weixin!=''">
+           , weixin = #{weixin}
+        </if>
+                 
+  		where member_id=#{memberId}
+    </update>
+    
+    <insert id="addMember" parameterType="com.mamala.market.pojo.member.Member"
+            useGeneratedKeys="true" keyProperty="memberId" keyColumn="member_id">
+        INSERT INTO t_member (member_name,group_id,group_name,card_number,remain_money,disabled,phone,sex,birthday,user_id,store_id,address,remarks,weixin,create_time,modify_time)
+        VALUES (#{memberName} ,#{groupId} , #{groupName},#{cardNumber} , #{remainMoney} ,#{disabled} , #{phone} , #{sex} ,#{birthday} ,#{userId}, #{storeId},#{address} ,#{remarks} ,#{weixin}  ,now(), now())
+    </insert>
+    
+    <delete id="deleteMember">
+        DELETE FROM t_member
+        WHERE member_id = #{memberId}
+    </delete>
+    
+    
+    <select id="qryMemberGroupList" resultType="com.mamala.market.pojo.member.MemberGroup" parameterType="com.mamala.market.pojo.member.MemberGroup">
+  		SELECT  group_id groupId,group_name groupName,up_group_id upGroupId,up_group_name upGroupName,rebate from t_member_group
+  		where 1=1 and group_id!=0
+  		<if test="qryStore !=null and qryStore!=''">
+           and store_id in (#{qryStore})
+        </if> 
+    </select>
+
+	<update id="updateMemberGroup" parameterType="com.mamala.market.pojo.member.MemberGroup">
+        UPDATE t_member_group
+        SET group_name = #{groupName} 
+        , up_group_id = #{upGroupId} 
+        , up_group_name = #{upGroupName} 
+        , rebate = #{rebate}  
+        , modify_time = now()
+  		where group_id=#{groupId}
+    </update>
+    
+    <insert id="addMemberGroup" parameterType="com.mamala.market.pojo.member.MemberGroup"
+            useGeneratedKeys="true" keyProperty="memberGroupId" keyColumn="member_group_id">
+        INSERT INTO t_member_group (group_name,up_group_id ,up_group_name,rebate,user_id,store_id)
+        VALUES (#{groupName} ,#{upGroupId} , #{upGroupName},#{rebate},#{userId},#{storeId})
+    </insert>
+    
+    <delete id="deleteMemberGroup">
+        DELETE FROM t_member_group
+        WHERE group_id = #{groupId}
+    </delete>
+    
+     <insert id="addMemberChargeLog" parameterType="com.mamala.market.pojo.member.MemberChargeLog"
+            useGeneratedKeys="true" keyProperty="payId" keyColumn="pay_id">
+        INSERT INTO t_member_pay_info (obj_id,obj_type,card_number,pay_type_id,should_pay_money,real_pay_money,pay_discount,remain_money,pay_remarks,pay_time,user_id)
+        VALUES (#{objId} ,#{objType} ,#{cardNumber} , #{payTypeId},#{shouldPayMoney},#{realPayMoney}, #{payDiscount},#{remainMoney}, #{payRemarks},now(),#{userId})
+    </insert>
+    
+    <select id="qryMemberDishList" resultType="com.mamala.market.pojo.member.MemberDish" parameterType="com.mamala.market.pojo.member.MemberDish">
+  		SELECT member_dish_id memberDishId,detail_id  detailId,if_pay ifPay,member_id memberId,dish_id dishId,dish_name dishName,dish_price dishPrice,dish_count dishCount,status,dish_type_id dishTypeId,rela_dish_type_id relaDishTypeId,rela_dish_type_name relaDishTypeName,create_time createTime,using_time userTime,dish_using_range dishUsingRange,dish_unit dishUnit from t_member_dish
+  		where 1=1  and status !=2
+  		<if test="relaDishTypeId > 0">
+           and rela_dish_type_id = #{relaDishTypeId}
+        </if>
+        <if test="memberId > 0">
+           and member_id = #{memberId}
+        </if>
+        <if test="detailId > 0">
+           and detail_id = #{detailId}
+        </if>
+        <if test="dishUsingRange > 0">
+           and dish_using_range = #{dishUsingRange}
+        </if>
+        <if test="ifPay > 0">
+           and if_pay = #{ifPay}
+        </if>
+        <if test="dishId > 0">
+           and dish_id = #{dishId}
+        </if> 
+    </select>
+    <select id="qryMemberDishById" resultType="com.mamala.market.pojo.member.MemberDish" parameterType="com.mamala.market.pojo.member.MemberDish">
+  		SELECT member_dish_id memberDishId,detail_id  detailId,if_pay ifPay,member_id memberId,dish_id dishId,dish_name dishName,dish_price dishPrice,dish_count dishCount,status,dish_type_id dishTypeId,rela_dish_type_id relaDishTypeId,rela_dish_type_name relaDishTypeName,create_time createTime,using_time userTime,dish_using_range dishUsingRange,dish_unit dishUnit from t_member_dish
+  		where 1=1 and status !=2
+        <if test="memberDishId > 0">
+           and member_dish_id = #{memberDishId}
+        </if>
+    </select>
+    <select id="qryMemberDishByDetailId" resultType="com.mamala.market.pojo.member.MemberDish" parameterType="com.mamala.market.pojo.member.MemberDish">
+  		SELECT member_dish_id memberDishId,detail_id  detailId,if_pay ifPay,member_id memberId,dish_id dishId,dish_name dishName,dish_price dishPrice,dish_count dishCount,status,dish_type_id dishTypeId,rela_dish_type_id relaDishTypeId,rela_dish_type_name relaDishTypeName,create_time createTime,using_time userTime,dish_using_range dishUsingRange,dish_unit dishUnit from t_member_dish
+  		where 1=1  and status !=2
+        <if test="detailId > 0">
+           and detail_id = #{detailId}
+        </if>
+    </select>
+
+    <select id="qryMemberDishByMemberId" resultType="com.mamala.market.pojo.member.MemberDish" parameterType="com.mamala.market.pojo.member.MemberDish">
+  		SELECT member_dish_id memberDishId,detail_id  detailId,if_pay ifPay,member_id memberId,dish_id dishId,dish_name dishName,dish_price dishPrice,dish_count dishCount,status,dish_type_id dishTypeId,rela_dish_type_id relaDishTypeId,rela_dish_type_name relaDishTypeName,create_time createTime,using_time userTime,dish_using_range dishUsingRange,dish_unit dishUnit from t_member_dish
+  		where 1=1   and status !=2
+        <if test="memberId > 0">
+           and member_id = #{memberId}
+        </if>
+       
+    </select>
+    
+     <select id="qryMemberDishByMemberDetailId" resultType="com.mamala.market.pojo.member.MemberDish" parameterType="com.mamala.market.pojo.member.MemberDish">
+  		SELECT member_dish_id memberDishId,detail_id  detailId,if_pay ifPay,member_id memberId,dish_id dishId,dish_name dishName,dish_price dishPrice,dish_count dishCount,status,dish_type_id dishTypeId,rela_dish_type_id relaDishTypeId,rela_dish_type_name relaDishTypeName,create_time createTime,using_time userTime,dish_using_range dishUsingRange,dish_unit dishUnit from t_member_dish
+  		where 1=1   and status !=2
+        <if test="memberId > 0">
+           and member_id = #{memberId}
+        </if>
+        <if test="dishId >= 0">
+           and dish_id = #{dishId}
+        </if>
+        <if test="ifPay > 0">
+           and if_pay = #{ifPay}
+        </if>
+    </select>
+    
+	<update id="updateMemberDish" parameterType="com.mamala.market.pojo.member.MemberDish">
+        UPDATE t_member_dish
+        SET  modify_time = now()
+        <if test="memberId > 0">
+           , member_id = #{memberId}
+        </if>
+        <if test="dishId > 0">
+           , dish_id = #{dishId}
+        </if>
+        <if test="dishCount >= 0">
+           , dish_count = #{dishCount}
+        </if>
+        <if test="status > 0 ">
+           , status = #{status}
+        </if>
+        <if test="detailId > 0 ">
+           , detail_id = #{detailId}
+        </if>
+        <if test="ifPay > 0 ">
+           , if_pay = #{ifPay}
+        </if>
+        <if test="dishName != '' || dishName == null ">
+           , dish_name = #{dishName}
+        </if>        
+        <if test="dishTypeId >0 ">
+           , dish_type_id = #{dishTypeId}
+        </if>
+        <if test="relaDishTypeId >0 ">
+           , rela_dish_type_id = #{relaDishTypeId}
+        </if>
+        <if test="dishUsingRange >0 ">
+           , dish_using_range = #{dishUsingRange}
+        </if>
+        <if test="usingTime != '' || usingTime == null ">
+           , using_time = now()
+        </if>    
+        <if test="dishPrice >0 ">
+           , dish_price = #{dishPrice}
+        </if>   
+  		where member_dish_id=#{memberDishId}
+    </update>
+    
+    <update id="setMemberDishCountByDetailId" parameterType="com.mamala.market.pojo.member.MemberDish">
+        UPDATE t_member_dish
+        SET  modify_time = now() 
+        <if test="dishCount >= 0">
+           , dish_count = dish_count + #{dishCount}
+        </if>  
+  		where detail_id=#{orderDishDetailId}
+    </update>
+    
+    <insert id="addMemberDish" parameterType="com.mamala.market.pojo.member.MemberDish"
+            useGeneratedKeys="true" keyProperty="memberId" keyColumn="member_id">
+        INSERT INTO t_member_dish (member_id,dish_id,detail_id,if_pay,dish_name,dish_price,dish_count,status,dish_type_id,rela_dish_type_id,rela_dish_type_name,create_time,dish_using_range,dish_unit)
+        VALUES (#{memberId} ,#{dishId} , #{detailId},#{ifPay},#{dishName}, #{dishPrice}, #{dishCount} , #{status} ,#{dishTypeId} , #{relaDishTypeId} ,#{relaDishTypeName}, now() ,#{dishUsingRange},#{dishUnit} )
+    </insert>
+    
+    <delete id="deleteMemberDish">
+        DELETE FROM t_member_dish
+        WHERE member_dish_id=#{memberDishId}
+    </delete>
+     <delete id="deleteMemberDishByDetailId">
+        DELETE FROM t_member_dish
+        WHERE detail_id=#{orderDishDetailId}
+    </delete>
+    
+</mapper>

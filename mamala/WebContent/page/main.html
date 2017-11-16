@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Mamala餐饮营销系统</title>
+<link rel="shortcut icon" type="image/png" href="../img/logo.png">
+	<link href="../css/main.css" rel="stylesheet"/>
+	
+	<link rel="stylesheet" type="text/css" href="../css/jquery-ui.css"> 
+	<link rel="stylesheet" type="text/css" href="../css/spliter.css">  
+<link rel="stylesheet" type="text/css" href="../css/dataTables.css">
+<link rel="stylesheet" type="text/css" href="../css/sui.min.css">
+<link rel="stylesheet" type="text/css" href="../css/sui-append.min.css">
+
+</head>
+<body style="background:url('../img/login/login_bj.png');">
+  
+	<div class='nav-box'>
+		<div class='nav-container'>
+			<div class='nav-logo fl'><img src="../img/logo.png" style="width:91px;height:80px" alt=""/><img style="margin: -160px 20px 0 60px;" src="../img/logo2.png"  alt=""/> </div>
+			<div class='nav-bar  fl'>
+				<div class='nav-item fl select' type="desktop" url='./desktop.html'>开台</div>
+				<div class='nav-item fl unselect' type="takeout" url='./takeout.html'>外卖</div>
+				<div class='nav-item fl unselect' type="inventory" url='./inventory.html'>清单</div>
+				<div class='nav-item fl unselect' type="cookbook" url='./cookbook.html'>菜单</div>
+				<div class='nav-item fl unselect' type="member" url='./member.html'>会员</div>
+				<div class='nav-item fl unselect' type="report"  url='./report.html' style='border:none'>报表</div> 
+			</div>
+		</div>
+		<div style="float:right;">  
+		   <div class="user" ></div> 
+		   <div class="store"></div>		   
+		   <div class="help" style='display:none'></div>
+		</div>
+		
+	</div>
+	<div class='content'>
+		
+	</div>
+	
+<ul class="sui-dropdown-menu user-center" style="display:none;position: absolute;z-index: 999;width:100px">
+  <li role="presentation" class='setting'><a role="menuitem" tabindex="-1" href="#">系统设置</a></li> 
+  <li role="presentation" class="passwd" data-toggle="modal" data-target="#password-panel"><a role="menuitem" tabindex="-1" href="#">修改密码</a></li> 
+  <li role="presentation" class="quit"><a role="menuitem" tabindex="-1" href="#">系统退出</a></li>  
+</ul>
+
+<div style="width:500px;margin-left:-300px;" id="password-panel" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">密码修改</h4>
+      </div>
+      <div class="modal-body">
+				<div style="height: 120px;margin:auto">
+					<form class="password-form sui-form form-horizontal  sui-validate" novalidate="novalidate">
+						<div class="control-group">
+							<label  class="control-label">
+								旧密码：
+							</label>
+							<div class="controls">
+								<input type="password"  id="oldPass"  data-rules="required"> 
+							</div>
+						</div> 
+						<div class="control-group">
+							<label class="control-label">
+								新密码：
+							</label>
+							<div class="controls">
+								<input type="password" id="newPass" name="新密码"   data-rules="required|minlength=5"  >
+							</div>
+						</div> 
+						<div class="control-group">
+							<label class="control-label">
+								确认密码：
+							</label>
+							<div class="controls">
+								<input type="password" id="confirmPass" data-rules="required|minlength=5|match=新密码"   >
+							     
+							</div>
+						</div> 
+					</form>
+				</div>
+			</div>
+		   <div class="modal-footer">
+				<button type="button" data-dismiss="modal" class="sui-btn btn-primary btn-large confirm-pwd">修改</button> 
+				<button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large close-open-btn">取消</button>
+		   </div>
+    </div>
+  </div>
+</div>
+
+</body>
+<script type="text/javascript" src="../js/lib/jquery.min.js"></script>
+<script type="text/javascript" src="../js/lib/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../js/lib/jquery.cookie.js"></script>
+<script type="text/javascript" src="../js/lib/jquery.md5.js"></script>
+<script type="text/javascript" src="../js/lib/jquery.Printarea.js"></script> 
+<script type="text/javascript" src="../js/lib/brower.js"></script>
+<script type="text/javascript" src="../js/lib/sui.min.js"></script>
+<script type="text/javascript" src="../js/lib/sea.js"></script> 
+<script type="text/javascript" src="../js/lib/dataTables.js"></script> 
+<script src='http://172.24.128.150:8000/CLodopfuncs.js'></script>
+<script type="text/javascript" src="../js/print.js"></script> 
+<script type="text/javascript">
+	seajs.use('../js/main',function(main){
+		$(function(){
+			main.init();
+			//window.onresize = resize;
+			
+		});
+	})
+</script>
+</html>

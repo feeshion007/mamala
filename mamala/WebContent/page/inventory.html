@@ -1,0 +1,57 @@
+<link rel="stylesheet" type="text/css" href="../css/sui.min.css">  
+<style>
+</style>
+<div class='container-box'>
+	<table id="order-list-tb" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>消费清单</th>
+                <th>消费时间</th>
+                <th>消费类型</th>
+                <th>状态</th>
+                <th>餐台/牌号</th>
+                <th>顾客手机</th>
+                <th>消费人数</th>
+                <th>收银员</th>
+                <th>消费金额</th>
+                <th>赠送金额</th>
+                <th>菜品折扣</th>
+                <th>整单折扣</th>
+                <th>应付金额</th>
+                <th>实付金额</th>
+                <th>操作</th>
+            </tr>
+        </thead> 
+        <tbody> 
+        </tbody>
+    </table>
+</div>
+
+ <div class="reports" id="dishPrinter" style="background: #fff;width:5.5cm;position:fixed;display:none;font-family: tahoma, arial,'Hiragino Sans GB', 'Microsoft Yahei', \5b8b\4f53, sans-serif;">
+	 <div class="report-name" style="text-align: center;font-weight:600;font-size:14px;"></div>
+	 <div class="report-query-date" style="margin:4 0px;border-top:dotted 2px #000;padding-top:4px;font-size:12px">
+	    <div>开台桌号：<em class='deskNum' style='border-bottom:solid 1px #999'></em></div> 
+	    <div>账单编号：<em class='orderNum' style='border-buttom:solid 1px #999;'></em></div>
+	    <div>消费人数：<em class='deskCount' style='border-buttom:solid 1px #999'></em></div>
+	    <div>点菜时间：<em class='deskTime' style='border-bottom:solid 1px #999'></em></div> 
+	    <div>服务人员：<em class='orderserver' style='border-buttom:solid 1px #999;'></em></div>
+	 </div>
+	 <div class="report-content" style='border-top:dotted 2px #000;paddint-top:10px;font-size:12px' >
+		 <div class="report-list" style='margin-top:4px;margin-bottom:4px;'>
+		     <div class="report-dish-tr" style='text-align:center;border-bottom:dotted 2px #999;padding-bottom:4px;'>
+	              <span style="width:60px;text-align:left">菜品名称</span> 
+	               <span style='width:80px;text-align:right;'>数量/单价</span> 
+	              <span style='width:40px;text-align:right;'>金额</span> 
+             </div>			             
+		 </div>					  
+	 </div>
+	 <div class="report-bottom" style='border-top:dotted 2px #000;margin-top:4px;font-size:13px'>打印时间：<em class="print-time" style='font-size:13px'></em></div>
+ </div>
+ 
+<script type="text/javascript">
+	seajs.use('../js/inventory',function(dk){
+		$(function(){
+			dk.init();
+		});
+	})
+</script>

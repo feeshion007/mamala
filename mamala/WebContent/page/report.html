@@ -1,0 +1,256 @@
+<link rel="stylesheet" type="text/css" href="../css/sui.min.css">
+<style>
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color:#fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #dedede;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+::selection {
+    color: #fff;
+    background-color: #08c;
+}
+    .desktop-box{height: 100%;width: 100%;} 
+	.desk-consumed-box{width: 100%;margin: 0 auto;display: none;margin-top:10px;}
+	.left-box{ height: 100%; width: 300px;border-right: 2px solid #ccc;box-sizing: border-box;}
+	.right-box{width: 960px;  height: 100%;}
+	.box-title{z-index: 22; position: relative; font-size: 14px; font-weight: 800;height: 40px; line-height: 40px; padding-left: 20px; background-color: #e6e6e6;  border: solid 1px #ccc; margin-right: 2px;margin-left: 2px;}
+	.user-recipes-list{ height: 100%; margin-top: -42px;}
+	.user-consumed-aggregate{width: 50%;height: 40px;line-height: 40px;padding-left: 10px;box-sizing:border-box;}
+	.user-consumed-btn{width: 25%;text-align: center;}
+	.ui-menu { width: 292px;height: 100%;margin-left: 2px; }
+    .ui-widget-header { padding: 0.2em; }
+    .ui-menu-click{ 
+		font-weight: bold;
+		color: #eb8f00; 
+	}
+	.reports{
+		height: 100%;
+		margin-left: 40px; 
+		width: 320px;
+		display:none
+	}
+	.report-name{
+	    font-size: 17px;
+		font-weight: 800;
+		padding-bottom: 12px;
+		border-bottom: 1px solid rgb(0, 0, 0);
+		text-align: center;
+		margin-top: 67px;
+		border-top: dotted 1px #ccc; 
+		border-left: dotted 1px #ccc; 
+		border-right: dotted 1px #ccc;
+	}
+	.report-title{
+		margin-top: 18px;
+		font-size: 15px;
+		font-weight: 800;
+		border-bottom: 1px solid rgb(0, 0, 0);
+		padding-bottom: 3px; 
+	}
+	.report-tail{
+		border-top: 1px solid rgb(0, 0, 0);
+		font-size: 14px;
+		font-weight: 800; 
+		margin-top: 18px;
+	}
+	.report-query-date{border-left: dotted 1px #ccc; border-right: dotted 1px #ccc;}
+	.report-bottom{border-top: 1px solid rgb(0, 0, 0);border-left: dotted 1px #ccc; border-right: dotted 1px #ccc;}
+	.report-content{margin-top:18px;margin-bottom:18px;border-left: dotted 1px #ccc; border-right: dotted 1px #ccc;}
+	.report-list{margin-bottom:28px;}
+	.report-center{display: inline-block;text-align: center;}
+	.report-tr span{margin-left:0 20px;}
+	.report-dish-tr span{width: 66px;display: inline-block;text-align: center;}
+	.report-day-tr span{width: 76px;display: inline-block;text-align: center;}
+	.report-tail span{display: inline-block; width: 76px; text-align: center;}
+</style>
+<div class='desktop-box clearfix'>
+	<div class='left-box fl'>
+		<div class='box-title'>收银报表</div>
+		<div class='user-recipes-list'>
+		  <ul id="box-menu">    
+			  <li target="qryTotalReport" class="header" style="margin-top:41px;">营业综合统计报表</li>
+			  <li target="qryDayReportList">营业额日统计报表</li>
+			  <li target="qryPayReport">营业额收款统计报表</li>  
+			  <li target="qryCreditReport">挂单结账统计报表</li>
+			  <li target="qryDishReportList">菜品统计报表</li> 
+			  <li target="qryEarnReport">营业收入成本统计报表</li> 
+			</ul> 
+		</div>
+	</div>
+	<div class='right-box fr'>
+		<div class='box-title' style="margin-right:10px">报表查询
+		    <span style="margin-left:100px;font-size:12px">开始时间：<em><input type="text" id="dine_start_time" name="deskStartTime"  data-rules="required|datetime" placeholder="请输入开始时间"  tip="noshow" data-toggle="datepicker" data-date-timepicker="true">
+							</em></span>
+				    <span style="font-size:12px">结束时间：<em><input type="text" id="dine_end_time" name="deskEndTime"  data-rules="required|datetime" placeholder="请输入结束时间"  tip="noshow" data-toggle="datepicker" data-date-timepicker="true">
+							</em></span>
+					<a  style="background-color: #4cb9fc;color: #fff;" id='back-desktop' href="javascript:void(0);" class="sui-btn btn-bordered btn-xlarge btn-primary order-qry-btn">查 询</a>
+									
+		</div>
+		<div class='user-recipes-list' style="overflow-y:scroll;">
+			<div class="reports" id="qryTotalReport" style="display:block">
+				 <div class="report-name">综合报表</div>
+				 <div class="report-query-date">
+				    <div>开始时间：<em class='start-time'></em></div>
+				    <div>结束时间：<em class='end-time'></em></div>
+				 </div>
+				 <div class="report-content">
+					 <div class="report-list">
+					     <div class="report-title">营业消费汇总</div>
+					     <div class="report-center">
+                              <div>消费合计：<em id="totalSpend"></em></div>
+                              <div  style="margin-left:34px;">结账消费：<em id="totalPaySpend"></em></div>
+                              <div style="margin-left:36px;border-bottom: 1px solid #000;width: 70%;">挂单消费：<em id="totalDebay"></em></div>
+                              <div style="padding-left:38px;" >【已结账】：<em id="totalPaid"></em></div>
+                              <div style="padding-left:45px;border-bottom: 1px solid #000;">【未结账】：<em id="totalUnPay"></em></div>
+                               <div style="padding-left:14px;">-【赠送金额】：<em id="totalGive"></em></div>
+                              <div style="padding-left:14px;">-【退单金额】：<em id="totalCanel"></em></div>
+                               <div style="margin-left: -10px;">-【菜品折扣金额】：<em id="totalDiscount"></em></div>
+                              <div style="margin-left: -10px;">-【整单折扣金额】：<em id="totalAllDiscount"></em></div>
+                         </div>
+					     <div class="report-tail">应付金额:<em id="totalShouldPay">35.00(人民币)</em></div>
+					 </div>
+					  <div class="report-list">
+					     <div class="report-title">营业收银汇总</div>
+					     <div class="report-center"> 
+                              <div style='font-weight:800'>应收金额：<em id="totalShouldPay"></em></div>
+                              <div >【已收】：<em id="totalPaid"></em></div>
+                              <div >【未收】：<em id="totalUnPay"></em></div>
+                              <div style="padding-left:12px;">单总数：<em id="totalOrderCount"></em></div>
+                              <div style="padding-left:12px;">总人数：<em id="totalCustomCount"></em></div>
+                              <div style=" ">单均消费：<em id="avgOrderCost"></em></div> 
+                              <div style=" ">人均消费：<em id="avgCustomCoust"></em></div> 
+					     </div> 
+			 		 </div>
+					  <div class="report-list">
+					     <div class="report-title">会员卡充值消费汇总</div>
+					     <div class="report-center">
+					         <div class="report-tr">
+					              <span>充值收款：<em id="totalRechargeEarn"></em></span> <br/>
+					              <span>充值金额：<em id="totalRecharge"></em></span> <br/>
+					              <span>消费金额：<em id="totalSpend"></em></span> <br/>
+					              <span style='margin-left: -4px;'>充值消费差额：<em id="margin"></em></span> <br/>
+					              <span>退卡金额：<em id="totalBackCard"></em></span> <br/>
+					              <span style='margin-left: 8px;'>会员卡余额：<em id="totalRemain"></em></span>  
+					           </div>
+					     </div> 
+					 </div> 
+				 </div>
+				 <div class="report-bottom">打印时间：<em class="print-time">2016-06-07 13:14:00</em></div>
+			 </div>
+			 
+			 <div class="reports" id="qryDayReportList">
+				 <div class="report-name">营业额统计报表</div>
+				 <div class="report-query-date">
+				    <div>开始时间：<em class='start-time'></em></div>
+				    <div>结束时间：<em class='end-time'></em></div>
+				 </div>
+				 <div class="report-content">
+					 <div class="report-list">
+					     <div class="report-title">营业消费汇总</div>
+					     <div class="report-center">
+					           <div class="report-day-tr">
+					              <span>日期</span>
+					              <span>挂单</span>
+					              <span>结账</span>
+					              <span>总额</span>
+					           </div>
+                          </div>
+					     <div class="report-tail ">
+					          <span style="width:76px">总计金额:</span>
+				              <span><em id="day-debay" style="width:76px">35.00</em></span>
+				              <span><em id="day-pay" style="width:76px">35.00</em></span>
+				              <span><em id="day-total" style="width:76px">35.00</em></span>
+					     </div>
+					 </div> 
+				 </div>
+				 <div class="report-bottom">打印时间：<em class="print-time">2016-06-07 13:14:00</em></div>
+			 </div>
+			 
+			 <div class="reports" id="qryPayReport">
+				 <div class="report-name">挂单结账统计报表</div>
+				 <div class="report-query-date">
+				    <div>开始时间：<em class='start-time'></em></div>
+				    <div>结束时间：<em class='end-time'></em></div>
+				 </div>
+				 <div class="report-content">
+					 <div class="report-list">
+					     <div class="report-title">直接结账收款:<em id="totalPay"></em></div>
+					      <div class="report-title">挂单结账收款:<em id="debayPay"></em></div>
+					      <div class="report-title">会员充值收款:<em id="rechargePay"></em></div>
+					 </div> 
+				 </div>
+				 <div class="report-bottom">打印时间：<em class="print-time">2016-06-07 13:14:00</em></div>
+			 </div>
+			 
+			 
+			 
+			 <div class="reports" id="qryCreditReport">
+				 <div class="report-name">挂单结账统计报表</div>
+				 <div class="report-query-date">
+				    <div>开始时间：<em class='start-time'></em></div>
+				    <div>结束时间：<em class='end-time'></em></div>
+				 </div>
+				 <div class="report-content">
+					 <div class="report-title">合计:<em id="totalMoney"></em></div>
+				 </div>
+				 <div class="report-bottom">打印时间：<em class="print-time">2016-06-07 13:14:00</em></div>
+			 </div>
+			 
+			 <div class="reports" id="qryDishReportList">
+				 <div class="report-name">综合报表</div>
+				 <div class="report-query-date">
+				    <div>开始时间：<em class='start-time'></em></div>
+				    <div>结束时间：<em class='end-time'></em></div>
+				 </div>
+				 <div class="report-content">
+					 <div class="report-list">
+					     <div class="report-dish-tr" style='font-weight:800'>
+				              <span style="width:106px">菜品：</span>
+				              <span>点菜：</span>
+				              <span>退菜：</span>
+				              <span>赠菜：</span>
+			             </div>
+			             
+					 </div>
+					  
+				 </div>
+				 <div class="report-bottom">打印时间：<em class="print-time">2016-06-07 13:14:00</em></div>
+			 </div>
+			  
+			 
+			 <div class="reports"  id="qryEarnReport">
+				 <div class="report-name">营业收入成本统计报表</div>
+				 <div class="report-query-date">
+				    <div>开始时间：<em class='start-time'></em></div>
+				    <div>结束时间：<em class='end-time'></em></div>
+				 </div>
+				 <div class="report-content">
+					 <div class="report-list">
+					      <div>总金额:<em id='totalMoney'></em></div>
+					      <div>已支付:<em id='payMoney'></em></div>
+					      <div>成本:<em id='costMoney'></em></div>
+					      <div>利润:<em  id='earnMoney'></em></div>
+					 </div> 
+				 </div>
+				 <div class="report-bottom">打印时间：<em class="print-time">2016-06-07 13:14:00</em></div>
+			 </div>
+			  
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	seajs.use('../js/report',function(dk){
+		$(function(){
+			dk.init();
+		});
+	})
+</script>

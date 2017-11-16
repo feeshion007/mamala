@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="mamala"
+  id="myeclipse.1467030590307"
+  context-root="/mamala"
+  j2ee-spec="5.0"
+  archive="mamala.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebContent" />
+  </attributes>
+</project-module>
+

@@ -1,0 +1,420 @@
+<link rel="stylesheet" type="text/css" href="../css/desktop.css">
+<style>
+
+</style> 
+<div class='desktop-box recipes clearfix'>
+	 <div class='recipes-box user-recipes-box1 '>
+
+			<div class='recipes-title'><span>当前餐台： <lable id="title-desk-id" style="display:none"></lable><lable id="title-desk-name"></lable></span><span style="margin-left:24px">就餐人数： <lable id="title-customer-count"></lable>[可供<lable id="title-desk-seats"></lable>人]</span>
+             <div>会员信息：<input type="text" id="title-order-phone"  style="width:100px;border:none;"/>[<lable id="title-order-canbeset"></lable>]</div> 
+              <lable id="title-order-id" style="display:none"></lable>
+              <input type="hidden" id="title-member_id">
+             </div>
+			<div class='user-recipes-list'>
+				<div  style='overflow-y:scroll;' id="order-dish-div"  >
+					<table id="order-dish-tb" class="display" cellspacing="0" width="100%">
+					  <thead>
+					    <tr>
+					      <th></th>
+					      <th></th>
+					      <th></th>
+					      <th width="3px" style="width:4px"></th>
+					      <th width="95px">品名</th>
+					      <th width="25px">状态</th>
+					      <th width="60px">数量</th>
+					      <th width="25px">下单</th>
+					      <th width="30px">单价</th>
+					      <th width="60px" style="text-align:left">金额</th>
+					      <th>特殊要求</th>
+					      <th >点菜时间</th>
+					    </tr>
+					  </thead>
+					  <tbody> 
+					  </tbody>
+					</table>
+				</div>
+			</div>
+			<div class='operater'>
+				<div class='clearfix'>
+					<div class="fl">
+						<div class='user-consumed-aggregate '>消费：<label class="order-dish-spend"></label></div>
+						<div class='user-consumed-aggregate '>优惠：<label class="order-dish-discount"></label></div>
+					</div>
+					<div class="fl">
+						<div class='user-consumed-aggregate '>赠送：<label class="order-dish-give"></label></div>
+						<div class='user-consumed-aggregate '>应付：<label class="order-dish-pay"></label></div>
+				    </div>
+				</div>
+				<div class='clearfix'  style="margin-top: 8px;">
+					<div class='user-consumed-btn fl'><a  style="background-color: #4cb9fc;color: #fff;" id='back-desktop' href="javascript:void(0);" class="sui-btn btn-bordered btn-xlarge btn-primary order-back-btn">返回</a></div>
+					<div class='user-consumed-btn fl'><a style="background-color: #4cb9fc;color: #fff;" href="javascript:void(0);" class="sui-btn btn-bordered btn-xlarge btn-primary view-detail-btn">清单</a></div>
+					<div class='user-consumed-btn fl' ><a style="background-color: #4cb9fc;color: #fff;" href="javascript:void(0);" data-toggle="modal" data-target="#settle-accounts" data-keyboard="false"  class="sui-btn btn-primary btn-lg sui-btn btn-bordered btn-xlarge btn-primary show-pay-btn">结账</a></div>
+					<div class='user-consumed-btn fl'><a style="background-color: #4cb9fc;color: #fff;" href="javascript:void(0);" class="sui-btn btn-bordered btn-xlarge btn-primary confirm-order-btn">下单</a></div>
+					<div class='user-print-btn' style="margin-top:38px;margin-left:12px;">
+	    			    <input type="checkbox" class='print-cls' checked><span>打印到后厨</span>
+	    			    <input type="checkbox" class='takeout-cls' ><span>外送</span>
+	 			    </div>	
+				</div> 
+			</div>
+		</div>
+		<div class="width-change" style=""></div>
+		<div class='recipes-box shop-recipes-box1 '>
+			<div class='fr recipes-classify'>
+				<div sel='pre' class='browse-btn pre'>上一页<i class='pre'></i></div>
+				<div class='recipes-classify-select'> 
+				  
+				</div>
+				<div sel='next' class='browse-btn next'>下一页<i class='next'></i></div>
+			</div>
+			
+			<div class='recipes-classify-content-wrap'>
+				<div class='recipes-classify-content-left-box'> 
+					<div  style="height:50%;"> 
+					   <div style="height: 40px;border: solid 1px #dedede; background: #eee;font-size: 13px;font-weight: 800;padding-left: 10px;line-height: 40px;">菜品列表</div>
+					   <div class='recipes-classify-content-left'></div>
+					</div>
+					<div  style="height:50%"> 
+					   <div style="height: 40px;border: solid 1px #dedede; background: #eee;font-size: 13px;font-weight: 800;padding-left: 10px;line-height: 40px;">该客户套餐剩余的菜品列表<span style="line-height: 25px;height: 25px;background: #FFEFD5;border: 1px solid #2087e1;margin-left: 20px;display: inline-block;border-radius: 4px;padding: 0 10px;font-weight: 100;">已付款</span><span style="line-height: 25px;height: 25px;background: #ded;border: 1px solid #2087e1;margin-left: 20px;display: inline-block;border-radius: 4px;padding: 0 10px;font-weight: 100;">未付款</span></div>
+					   <div class='recipes-classify-content-left-set'></div>
+					</div>
+				</div>
+			</div>
+	</div>
+</div>
+
+<div class="desk-list">
+	<div class='desktop-box consumed clearfix fl'>
+		<!-- 桌号内容动态生成 -->
+		<div class="desk fl desk-color"  data-toggle="modal" data-target="#edit-table-panel" data-keyboard="false"  type="add" style="background:url('../img/add.gif') -30px -2px;;"></div>
+	</div>	
+	<div class="desk-order-info fl" style="display:inline-block;width:350px">
+       <div class="desk-order-info-detail">
+           <div><span>餐台名称:</span><span id="desk-name"></span></div>
+	       <div><span>开台时间:</span><span id="desk-start-time"></span></div>
+	       <div><span>顾客人数:</span><span id="desk-customer-count"></span></div>
+	       <div><span>消费合计:</span><span id="desk-spend"></span></div>
+	       <div><span>消费备注:</span><span id="desk-remarks"></span></div>
+       </div>
+       <div style="margin-left:6px;overflow-y:scroll;border-left: solid 1px #eee;" id="desk-order-dish-div">
+           <table id="desk-order-dish-tb" class="sui-table table-bordered" cellspacing="0" width="100%"  >
+			  <thead>
+			    <tr> 
+			      <th width="75px">品名</th> 
+			      <th width="25px">数量</th>
+			      <th width="40px">小计</th> 
+			    </tr>
+			  </thead>
+			  <tbody> 
+			  </tbody>
+			</table>
+       </div>
+    </div>
+</div>
+
+<!-- 开台弹出框 -->
+<div style="width:500px;margin-left:-300px;" id="open-desk" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">顾客开台</h4>
+      </div>
+      <div class="modal-body">
+				<div style="height: 370px;margin:auto">
+					<form class="open-desk-form sui-form form-horizontal  sui-validate" novalidate="novalidate">
+						<div class="control-group">
+							<label class="control-label" >
+								餐台编号：
+							</label>
+							<div class="controls">
+								<input type="text" disabled id="dine_desk_id" name="dineDeskId" placeholder="10032" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label  class="control-label">
+								餐台名称：
+							</label>
+							<div class="controls">
+								<input type="text" disabled id="dine_desk_name" name="dineDeskName"  placeholder="九号桌" > 
+							</div>
+						</div> 
+						<div class="control-group">
+							<label class="control-label">
+								手机号：
+							</label>
+							<div class="controls">
+								<input type="text" id="phone" name="phone" data-toggle="autocomplete" autocomplete=off  data-rules="mobile"  placeholder="可输入手机号" >
+							    <input id="member_id" name="memberId"   type="hidden"> 
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">
+								会员号：
+							</label>
+							<div class="controls">
+								<input type="text" id="card_number" disabled='true' name="cardNumber" placeholder="" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">
+								就餐时间：
+							</label>
+							<div class="controls">
+							  <input type="text" id="dine_start_time" name="deskStartTime"  data-rules="required|datetime" placeholder="请输入就餐时间"  tip="noshow" data-toggle="datepicker" data-date-timepicker="true">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">
+								顾客人数：
+							</label>
+							<div class="controls">
+								<input type="text" id="customer_count" name="comsterCount"  data-rules="digits|lt=100"  placeholder="可输入顾客人数" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">
+								餐台别名：
+							</label>
+							<div class="controls">
+								<input type="text" id="dine_desk_alias" name="dineDeskAlias" data-rules="maxlength=20" placeholder="餐台别名" >
+							</div>
+						</div> 
+						<div class="control-group">
+							<label for="inputDes" class="control-label v-top">
+								开台备注：
+							</label>
+							<div class="controls">
+								<textarea id="remarks" name="remarks" placeholder="备注" data-rules="maxlength=255"></textarea>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		   <div class="modal-footer">
+				<button type="button"  class="sui-btn btn-primary btn-large confirm-open-order">开台并点餐</button>
+				<button type="button" data-ok="modal" class="sui-btn btn-default btn-large confirm-open-desk">确定开台</button>
+				<button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large close-open-btn">关闭</button>
+		   </div>
+    </div>
+  </div>
+</div>
+
+<!-- 结账弹出框 -->
+<div id="settle-accounts" tabindex="-1" role="dialog" data-hasfoot="false" class="sui-modal hide" style='width:900px;margin-left:-450px;'>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">顾客结账</h4>
+      </div>
+      <div class="modal-body" style="overflow:hidden">
+      		<!-- top -->
+      		<div style='border-bottom: 1px solid #dedede;background-color: #fefefe;height: 30px;line-height: 30px;margin-top: -10px'>
+      			<span style='display:inline-block;width:30%'>结账单号:<lable id="pay-order-num"></lable></span>
+      			<span style='display:inline-block;width:30%;margin-left:100px'>餐台:<label id="pay-info"></label></span>
+      			<span style='display:inline-block;width:20%'>会员号:<label id="pay-phone"></label></span>
+      		</div>
+      		<!-- middle -->
+      		<div style='max-height:500px;'>
+	      		<div style='float:left;height:100%;width:78%;'>
+	      			<h3 style="color:#959595;float: left;margin: 5px;">消费明细</h3> 
+	      			<h3 style="color:#959595;margin:0;float: right;padding-top: 5px;">实付金额:￥<input id="pay-order-payer" style="background: #ded;width: 120px;"></h3>
+	      			<h3 style="color:#959595;margin:0;float: right;padding-top: 5px;margin-right: 20px;">应付金额:￥<input disabled id="pay-order-pay" style="background: #eee;width: 120px;"></h3>
+	      			 
+	      			<div style='height:324px;width:100%;'>
+		      			<table id="order-pay-tb" class="display nowrap" cellspacing="0" width="100%">
+						  <thead>
+						    <tr>
+						        <th width="0"></th>
+						    	<th width="30px">→</th>
+						    	<th style="width:30px"></th>
+						      	<th width="140px">品名</th> 
+						      	<th width="60px">金额</th>
+						      	<th width="60px">折扣</th>
+						      	<th width="40px">数量</th>
+						      	<th width="60px">单价</th> 
+						      	<th width="30px">状态</th>
+						      	<th >点菜时间</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						     
+						    
+						  </tbody>
+						</table>
+					</div>
+	      		</div>
+      			<div style='float:left;height:100%;width:10%;margin-left:3px;margin-top:-35px;'>
+      				<!-- right top -->
+	      			<div> 
+	      				
+	      				<div style='width:30%;margin-top:42px;'>
+	      					<div class='ctrl-btn pay-check-pay' style='line-height:100px;height:100px;'>结账</div>
+							<div class='ctrl-btn pay-pay-type' style='line-height:50px;height:50px;padding-right: 7px;'>
+							   <span class="sui-dropdown dropdown-bordered select" style="background:none;width:80px;">
+								   <span class="dropdown-inner" style="border:none"><a id="select" role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+								      <input value="1" name="paytype" id="pay_type"  type="hidden"><span>现金支付</span></a>
+								      <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu pay-menu" style="display: block;margin-left: 95px; margin-top: -100px; background: #eee;">
+								          <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">现金支付</a></li>
+									      <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="2">微信支付</a></li>
+									      <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="3">支付宝支付</a></li>
+									      <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="4">会员卡支付</a></li>
+									      <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="5">银行卡支付</a></li>
+									      <!-- li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="6">微信优惠券</a></li> -->
+									      <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="7">在线支付</a></li>
+									      <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="8">其他支付</a></li>
+									  </ul>
+								    </span>
+							    </span>
+                            </div>
+							<div class='ctrl-btn pay-nopay-leave' style='line-height:95px;height:95px;'>挂单离店</div>
+							<div class='ctrl-btn pay-close'  data-dismiss="modal"  style='line-height:40px;height:40px;'>关闭(C)</div>
+	      				</div>
+		      			
+	      			</div>
+	      			<!-- right bottom -->
+      				
+      			</div>
+      		</div>
+      	</div>
+      </div>
+      <div class="modal-footer" style='text-align:left;padding-left:50px;'>
+      		<div  style="float:left;margin-left:10px;">
+	      		<p style='margin-bottom:5px;'>合计消费：￥<lable id="pay-total-spend"></lable>  <label style='color:red;margin-left:48px;'>找零：</label><em style='color:green;margin-right:31px;font-style:normal;'>￥<label id="payback" style="width: 30px;display: inline-block;">0</label></em></p>
+	      		<p style='margin-bottom:5px;'>
+	      			菜品折扣：<em style='color:green;margin-right:31px;font-style:normal;'>-￥<label id="pay-dish-discount" style="width: 30px;display: inline-block;"></label></em>整单折扣：<em  style='color:green;font-style:normal;'>-￥<label id="pay-order-discount">0</label></em>
+	      		</p>
+	      		<p style='margin-bottom:5px;'>
+	      			抹零金额：<em style='color:green;margin-right:30px;font-style:normal;'>-￥<label id="pay-dish-zero" style="width: 30px;display: inline-block;"></label></em> 应付金额：￥<label id="pay-order-result"></label> 
+	      		</p>
+	      		
+	      		
+      		</div>
+      		<div  style="float:right;margin-right:50px">
+      		     <div style='clear:both;'> 
+  						<lable style="margin-top:6px;margin-left:10px;"">结账备注:</lable><textarea id="payremarks" style="margin-top:5px;width:350px;height:55px" name="payremarks" placeholder="" data-rules="maxlength=255"></textarea>
+					</div>
+      		</div>
+      </div>
+    </div>
+ </div>
+ 
+ 
+ 
+
+<div style="width:480px;margin-left:-300px;" id="edit-table-panel" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">餐桌管理</h4>
+      </div>
+      <div class="modal-body">
+				<div style="height: 200px;margin:6px 0px 0 0px">
+					<form class="sui-form form-horizontal  sui-validate edit-desk-form" id="edit-desk-form" action="" novalidate="novalidate" target="_self">
+						<div class="control-group">
+							<label class="control-label" >
+								桌牌编号：
+							</label>
+							<div class="controls">
+								<input type="text" disabled='true' id="table_id" name="tableId" placeholder="会员编号自动生成" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" >
+								桌牌名称：
+							</label>
+							<div class="controls">
+								<input type="text"  id="table_name" data-rules="required|maxlength=20" name="tableName" placeholder="请输入会员名称" >
+							</div>
+						</div>		
+						<div class="control-group">
+							<label class="control-label" >
+								桌牌别名：
+							</label>
+							<div class="controls">
+								<input type="text" id="table_alias" name="tableAlias"  data-rules="maxlength=20" placeholder="请输入会员代码" >
+							</div>
+						</div> 		
+						<div class="control-group">
+							<label class="control-label" >
+								可供人数：
+							</label>
+							<div class="controls">
+								<input type="text" id="table_seats" data-rules="required|digits|lt=100" name="tableSeats" placeholder="请输入会员代码" >
+							</div>
+						</div>   						
+					</form>  
+				</div>
+			</div>
+		   <div class="modal-footer">
+				<button type="button" data-ok="modal"   class="sui-btn btn-primary btn-large edit-table-btn">保存</button> 
+				<button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+		   </div>
+    </div>
+  </div>
+</div>
+
+<div style="width:710px;margin-left:-350px;" id="turn-table-panel" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">整桌转台</h4>
+      </div>
+      <div class="modal-body">
+			<div class='turn-desk'  style="height: 200px;margin:6px 0px 0 0px"></div>
+	  </div>
+	  <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large hide close-desk-btn">关闭</button>
+	</div>
+  </div>
+</div>
+ <div class="reports" id="dishPrinter" style="background: #fff;width:5.5cm;position:fixed;display:none;font-family: tahoma, arial,'Hiragino Sans GB', 'Microsoft Yahei', \5b8b\4f53, sans-serif;">
+	 <div class="report-name" style="text-align: center;font-weight:600;font-size:14px;"></div>
+	 <div class="report-query-date" style="margin:4 0px;border-top:dotted 2px #000;padding-top:4px;font-size:12px">
+	    <div>开台桌号：<em class='deskNum' style='border-bottom:solid 1px #999'></em></div> 
+	    <div>账单编号：<em class='orderNum' style='border-buttom:solid 1px #999;'></em></div>
+	    <div>消费人数：<em class='deskCount' style='border-buttom:solid 1px #999'></em></div>
+	    <div>点菜时间：<em class='deskTime' style='border-bottom:solid 1px #999'></em></div> 
+	    <div>服务人员：<em class='orderserver' style='border-buttom:solid 1px #999;'></em></div>
+	 </div>
+	 <div class="report-content" style='border-top:dotted 2px #000;paddint-top:10px;font-size:12px' >
+		 <div class="report-list" style='margin-top:4px;margin-bottom:4px;'>
+		     <div class="report-dish-tr" style='text-align:center;border-bottom:dotted 2px #999;padding-bottom:4px;'>
+	              <span style="width:60px;text-align:left">菜品名称</span> 
+	               <span style='width:60px;text-align:right;'>数量</span> 
+	              <span style='width:40px;text-align:right;'>金额</span> 
+             </div>			             
+		 </div>					  
+	 </div>
+	 <div class="report-bottom" style='border-top:dotted 2px #000;margin-top:4px;font-size:13px'>打印时间：<em class="print-time" style='font-size:13px'></em></div>
+ </div>
+			 
+<ul class="sui-dropdown-menu my-drowdown-menu" style="display:none;position: absolute;z-index: 999;width:150px">
+  <!-- li role="presentation" type="dishAdd" cat=1><a role="menuitem" tabindex="-1" href="#">增加数量</a></li>
+  <li role="presentation" type="dishMinus" cat=1><a role="menuitem" tabindex="-1" href="#">减少数量</a></li> -->
+  <li role="presentation" type="dishDel" cat=1><a role="menuitem" tabindex="-1" href="#">删除菜品</a></li> 
+  <li role="presentation" type="dishDemand" cat=11><a role="menuitem" tabindex="-1" href="#">特殊要求</a></li>
+  <li role="presentation" class="divider"></li> 
+  <li role="presentation" type="dishRetreat" cat=2><a role="menuitem" tabindex="-1" href="#">顾客退菜</a></li>
+  <li role="presentation" type="dishTurntable" data-toggle="modal" data-target="#turn-table-panel" data-keyboard="false" cat=21><a role="menuitem" tabindex="-1" href="#" >整桌转台</a></li>
+  <li role="presentation" class="divider"></li>
+  <li role="presentation" type="memberDishMove" cat=3><a role="menuitem" tabindex="-1" href="#">转到寄存</a></li>  
+  <!-- li role="presentation" type="memberDishAdd" cat=3><a role="menuitem" tabindex="-1" href="#">增加寄存</a></li> -->
+</ul>
+
+<ul class="sui-dropdown-menu all-dish-discount" style="display:none;position: absolute;z-index: 999;width:150px">
+  <li role="presentation" type="0.1" cat=1><a role="menuitem" tabindex="-1" href="#">整单折扣:9折</a></li>
+  <li role="presentation" type="0.05" cat=1><a role="menuitem" tabindex="-1" href="#">整单折扣:95折</a></li>
+  <li role="presentation" type="0.03" cat=1><a role="menuitem" tabindex="-1" href="#">整单折扣:97折</a></li>
+  <li role="presentation" type="0" cat=1><a role="menuitem" tabindex="-1" href="#">整单折扣:无折扣</a></li>  
+</ul>
+ 
+<script type="text/javascript">
+	seajs.use('../js/desktop',function(dk){
+		$(function(){
+			dk.init();
+		});
+	})
+
+</script>

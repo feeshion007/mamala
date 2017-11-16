@@ -1,0 +1,447 @@
+
+<style>
+	.cookbook-head {color: #000;background: #e6e6e6;height: 40px;border: 1px solid #eee;font-size: 14px;font-weight: 600;line-height: 40px;padding-left: 10px;}
+    .cookbook-type-box{width: 300px;margin-right: 1px;border-right: 2px solid #dedede;}
+	.cookbook-list-box{  width: 940px;height: 676px;position: relative;}
+	.pagination-position{position: absolute;bottom:0px;right: 10px;margin: 10px;}
+	.new-type-row{border: none; border-bottom: solid 1px #1299ec;background: #ffc;height: 100%;width: 100%;}
+	.new-row{border: none; border-bottom: solid 1px #1299ec;background: #ffc;height: 100%;width: 100%;}
+	.dishTips{color:red}
+	div.dataTables_wrapper2 {
+        width: 800px;
+        height:540px;
+        margin: 0 auto;
+    }
+    #edit-dish-panel .control-group{float:left;}
+    #edit-dish-panel .modal-body input{width:160px}
+    #edit-dish-panel .modal-body textarea{width:420px}
+    #edit-dish-panel .modal-body select {width:140px;height:80px;}
+    
+    #edit-dishType-panel .modal-body input{width:300px}  
+    #edit-dishType-panel .sui-tag.tag-bordered {
+	    border: 1px solid #ccc;
+	    padding-left: 5px;
+	    border-radius: 2px;
+	}
+	#edit-dishType-panel .sui-tag {
+	    list-style: none;
+	    font-size: 0;
+	    line-height: 0; 
+	    margin-bottom: 0;
+	    padding:0;
+	    padding-left: 20px;
+	    width:302px;
+	}
+	.sui-tag>li{
+	   margin: 3px 13px 3px 0;
+       padding: 0 18px;
+	}
+    .sui-dropup .caret::before, .sui-dropdown .caret::before {
+       content: "▼";
+     }
+     .sui-msg.msg-error > .msg-icon:before {
+	    content: "×";
+	}
+    .msg-error{
+	   height: 12px;
+       line-height: 10px;
+	   margin-left: -10px; 
+	}
+	.sui-form .help-inline {
+		position: fixed; 
+	}
+	.sui-form .help-inline { 
+	    margin-left: 1px; 
+	}
+</style>
+<div class='cookbook-type-box fl'>
+	<div class='cookbook-head'>菜品类型
+		<div class='fr new-dish-type-btn'>
+			<a href="javascript:void(0);" data-toggle="modal" data-target="#edit-dishType-panel" data-keyboard="false" style="background-color:#4cb9fc;color:#fff" class="sui-btn btn-bordered btn-xlarge btn-primary new-dishType-btn">新增品类</a>
+		</div>
+	</div>
+	<table id="dish-type-tb" class="display" cellspacing="0" width="100%">
+	  <thead>
+	    <tr>
+	      <th width='45%'>菜品类型</th> 
+	      <th width='28%'>套餐/赠送</th> 
+	      <th>操作</th>
+	    </tr>
+	  </thead>
+	  <tbody> 
+	  </tbody>
+	</table>
+</div>
+<div class='cookbook-list-box fl'>
+	<div class='cookbook-head'>菜品列表 
+		<div class='fr'>
+			<a href="javascript:void(0);"  data-toggle="modal" data-target="#edit-dish-panel" data-keyboard="false" style="background-color:#4cb9fc;color:#fff" class="sui-btn btn-bordered btn-xlarge btn-primary new-dish-btn">新增菜品</a>
+		</div>
+		<div class="fr dishTips"></div>
+	</div>
+	<table id="dish-tb" class="display nowrap" cellspacing="0" width="100%" >
+	  <thead>
+	    <tr>
+	     <th>操作</th>
+	        <th>菜品编号</th>
+	        <th>品名</th>
+	        <th>菜品代码</th>
+			<th>菜品拼音</th>
+			<th>所属品类</th>
+			<th>菜品别名</th>
+			<th>菜品售价</th>
+			<th>价格单位</th>
+			<th>菜品成本</th>
+			<th>菜品口味</th>
+			<th>是否可套餐</th>
+			<th>是否可打折</th>
+			<th>是否可赠送</th>
+			<th>是否可用</th>
+			<th>说明</th>
+	     
+	    </tr>
+	  </thead>
+	  <tbody> 
+	     
+	  </tbody>
+	</table> 
+</div>
+
+
+
+<div style="width:490px;margin-left:-300px;" id="edit-dishType-panel" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">菜品类型</h4>
+      </div>
+      <div class="modal-body">
+				<div style="height: 230px;margin:6px 0px 0 65x">
+					<form class="sui-form form-horizontal sui-validate edit-dishType-form" target="">
+						<div class="control-group" style='display:none'>
+							<label class="control-label" >
+								类型编号：
+							</label>
+							<div class="controls">
+								<input type="text" disabled='true' id="dish_type_id" name="dishTypeId" placeholder="员工号自动生成" >
+							</div>
+						</div>
+						<div class="control-group">
+							 <label for="inputGender" class="control-label">使用范围：</label>
+						    <div class="controls">
+							    <ul class="sui-tag tag-bordered"> 
+								  <li class="tag-selected" value=1>堂吃</li>
+								  <li class="tag-selected" value="3">外卖</li>
+							      <li value="2">套餐</li>
+							      <li value="4">赠送</li>
+								</ul>
+								<input id="dish_using_range" name="dishUsingRange"  type="hidden" value="13">  
+					         </div>
+						</div>
+						<div class="control-group">
+							 <label for="inputGender" class="control-label">是否禁用：</label>
+						    <div class="controls">
+							      <span class="sui-dropdown dropdown-bordered select">
+								      <span class="dropdown-inner">
+									      <a  style="width:292px" role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
+										      <input  id="dish_status" name="status"  type="hidden" value=2><i class="caret"></i>
+										      <span class="status-select-context">启用</span>
+									      </a>
+								          <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu status-select-menu"> 
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="2">启用</a></li>
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">禁用</a></li>
+								          </ul>
+							          </span>
+						          </span>
+					         </div>
+						</div>
+						<div class="control-group"  style='display:none'>
+							 <label for="inputGender" class="control-label">套餐/赠送：</label>
+						    <div class="controls">
+							      <span class="sui-dropdown dropdown-bordered select">
+								      <span class="dropdown-inner">
+									      <a  style="width:292px" onclick="javascript:void()" role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
+										      <input  id="dish_type_set" name="dishTypeSet"  type="hidden" value='1'> 
+										      <span class="dishTypeSet-select-context">普通</span>
+									      </a>
+								          <ul role="menu"  aria-labelledby="drop4" class="myhide sui-dropdown-menu dishTypeSet-select-menu"> 			
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">普通</a></li>					            
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="2">套餐</a></li>
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="4">赠送</a></li>
+								          </ul>
+							          </span>
+						          </span>
+					         </div>
+						</div> 
+						<div class="control-group">
+							<label  class="control-label">
+								类型名称：
+							</label>
+							<div class="controls">
+								<input type="text"  id="dish_type_name" name="dishTypeName" data-rules="required|maxlength=25" placeholder="可输入菜品类型" >
+							</div>
+						</div> 
+						<div class="control-group dish-price-line" style="display:none">
+							<label  class="control-label">
+								套餐价格：
+							</label>
+							<div class="controls">
+								<input type="text"  id="dish_unit_price" data-rules="required|number" name="dishUnitPrice" placeholder="可输入套餐价格" >
+							</div>
+						</div> 
+						<div class="control-group">
+							<label  class="control-label">
+								菜品代码：
+							</label>
+							<div class="controls">
+								<input type="text"  id="dish_type" name="dishType" data-rules="required|digits|eqlength=5" placeholder="可输入菜品代码" >
+							</div>
+						</div> 
+					</form>
+					
+				</div>
+			</div>
+		   <div class="modal-footer"> 
+				<button type="button" data-ok="modal" class="sui-btn btn-primary btn-large edit-dishType-btn">保存</button> 
+				<button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+		   </div>
+		   <div id="dish-setdish-div" style="display:none;float: right;margin-top: -458px;border: 1px solid rgb(204, 204, 204);border-radius: 2px;background: #fff;margin-right: -322px;height: 456px;width: 320px;">
+			  <table id="dish-setdish-tb" class="display" cellspacing="0" width="320px">
+				  <thead>
+				    <tr>  
+				      <th  class="header">品名</th> 
+				      <th  >数量</th> 
+				      <th>操作</th>
+				    </tr>
+				  </thead>
+				  <tbody> 
+				  </tbody>
+				</table>
+			</div>
+    </div>
+  </div>
+</div>
+<!-- 菜品类型弹出框 -->
+
+
+
+<div style="width:600px;margin-left:-300px;" id="edit-dish-panel" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">菜品管理</h4>
+      </div>
+      <div class="modal-body">
+				<div style="height: 100px;margin:6px 0px 0 60x">
+					<form class="sui-form form-horizontal sui-validate edit-dish-form" target="">
+						<div class="control-group"  style='display:none'>
+							<label class="control-label" >
+								菜品编号：
+							</label>
+							<div class="controls">
+								<input type="text" disabled='true' id="dish_id"  name="dishId" placeholder="菜品编号自动生成" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" >
+								菜品名称：
+							</label>
+							<div class="controls">
+								<input type="text"  id="dish_name" name="dishName" data-rules="required|maxlength=25" placeholder="请输入菜品名称" >
+							</div>
+						</div>						
+						<div class="control-group">
+							<label class="control-label" >
+								所属品类：
+							</label>
+							<div class="controls">
+								<input style="width:160px"  data-toggle="autocomplete" autocomplete="off" id="dish_dish_type_name" name="dishDishTypeName" placeholder="输入..." class="input-xlarge" type="text">
+								<input id="dish_dish_type_id" name="dishDishTypeId"   type="hidden"> 
+							</div>
+						</div>		
+						<div class="control-group">
+							<label class="control-label" >
+								菜品代码：
+							</label>
+							<div class="controls">
+								<input type="text" id="dish_name_eng" data-rules="required|digits" name="dishNameEng" placeholder="请输入菜品代码" >
+							</div>
+						</div>
+						<div class="control-group" style='display:none'>
+							<label class="control-label" >
+								菜品拼音：
+							</label>
+							<div class="controls">
+								<input type="text" id="dish_name_pinyin" name="dishNamePinyin" data-rules="alpha" placeholder="请输入菜品拼音" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" >
+								菜品别名：
+							</label>
+							<div class="controls">
+								<input type="text"  id="dish_alias" name="dishAlias" data-rules="maxlength=25" placeholder="请输入菜别名" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" >
+								菜品售价：
+							</label>
+							<div class="controls">
+								<input type="text"  id="dish_price" name="dishPrice" data-rules="required|number" placeholder="请输入菜品售价" >
+							</div>
+						</div>				
+						<div class="control-group">
+							 <label for="inputGender" class="control-label">价格单位：</label>
+						    <div class="controls">
+							      <span class="sui-dropdown dropdown-bordered select">
+								      <span class="dropdown-inner">
+									      <a  style="width:151px" role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
+										      <input  id="dish_unit" name="dishUnit"  type="hidden" value=2><i class="caret"></i>
+										      <span class="dishUnit-select-context">份</span>
+									      </a>
+								          <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu dishUnit-select-menu">
+									          <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="11">只</a></li>
+									          <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="10">串</a></li> 
+									          <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="9">千克</a></li>
+									          <!-- li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="8">克</a></li-->
+									          <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="7">打</a></li>
+									          <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="6">盘</a></li>
+									          <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="5">瓶</a></li>
+									          <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="4">个</a></li>
+								              <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="3">根</a></li>
+								              <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="2">份</a></li>
+								              <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">斤</a></li> 
+								          </ul>
+							          </span>
+						          </span>
+					         </div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" >
+								菜品成本：
+							</label>
+							<div class="controls">
+								<input type="text" id="dish_cost" data-rules="required|number" name="dishCost" placeholder="请输入菜品成本" >
+							</div>
+						</div>
+						<div class="control-group">
+							 <label for="inputGender" class="control-label">菜品口味：</label>
+						    <div class="controls">
+							      <span class="sui-dropdown dropdown-bordered select">
+								      <span class="dropdown-inner">
+									      <a  style="width:151px" role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
+										      <input  id="dish_taste" name="dishTaste"  type="hidden" value=1><i class="caret"></i>
+										      <span class="dishTaste-select-context">微辣</span>
+									      </a>
+								          <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu dishTaste-select-menu">
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="5">麻</a></li> 
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="4">重辣</a></li> 
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="3">辣</a></li>
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="2">不辣</a></li>
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">微辣</a></li> 
+								          </ul>
+							          </span>
+						          </span>
+					         </div>
+						</div>
+						<div class="control-group">
+							<label for="inputGender" class="control-label">是否可套餐：</label>
+						    <div class="controls">
+							      <span class="sui-dropdown dropdown-bordered select">
+								      <span class="dropdown-inner">
+									      <a  style="width:151px" role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
+										      <input  id="dish_canbe_set" name="dishCanbeSet"  type="hidden" value=1><i class="caret"></i>
+										      <span class="dishCanbeSet-select-context">不可套餐</span>
+									      </a>
+								          <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu dishCanbeSet-select-menu"> 
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="2">可套餐</a></li>
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">不可套餐</a></li>
+								          </ul>
+							          </span>
+						          </span>
+					         </div>
+						</div>
+						<div class="control-group">
+							 <label for="inputGender" class="control-label">是否可打折：</label>
+						    <div class="controls">
+							      <span class="sui-dropdown dropdown-bordered select">
+								      <span class="dropdown-inner">
+									      <a  style="width:151px" role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
+										      <input  id="dish_canbe_discount" name="dishCanbeDiscount"  type="hidden" value=2><i class="caret"></i>
+										      <span class="dishCanbeDiscount-select-context" >可打折</span>
+									      </a>
+								          <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu dishCanbeDiscount-select-menu"> 
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="2">可打折</a></li>
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">不可打折</a></li>
+								          </ul>
+							          </span>
+						          </span>
+					         </div>
+						</div>
+						<div class="control-group">
+							 <label for="inputGender" class="control-label">是否可赠送：</label>
+						    <div class="controls">
+							      <span class="sui-dropdown dropdown-bordered select">
+								      <span class="dropdown-inner">
+									      <a  style="width:151px" role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
+										      <input  id="dish_canbe_give" name="dishCanbeGive"  type="hidden" value=1><i class="caret"></i>
+										      <span class="dishCanbeGive-select-context">不可赠送</span>
+									      </a>
+								          <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu dishCanbeGive-select-menu"> 
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="2">可赠送</a></li>
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">不可赠送</a></li>
+								          </ul>
+							          </span>
+						          </span>
+					         </div>
+						</div>
+						<div class="control-group">
+							 <label for="inputGender" class="control-label">是否禁用：</label>
+						    <div class="controls">
+							      <span class="sui-dropdown dropdown-bordered select">
+								      <span class="dropdown-inner">
+									      <a  style="width:151px" role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
+										      <input  id="dish_disabled" name="dishDisabled"  type="hidden" value=2><i class="caret"></i>
+										      <span class="dishDisabled-select-context">启用</span>
+									      </a>
+								          <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu dishDisabled-select-menu"> 
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="2">启用</a></li>
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">禁用</a></li> 
+								          </ul>
+							          </span>
+						          </span>
+					         </div>
+						</div>
+						<div class="control-group">
+							<label  class="control-label">
+								备注说明：
+							</label>
+							<div class="controls">
+								<textarea id="dish_remarks" name="dishRemarks" data-rules="maxlength=250" placeholder="备注"
+									data-rules="required"></textarea>
+							</div>
+						</div>
+						 
+					</form>
+				</div>
+			</div>
+		   <div class="modal-footer">
+				<button type="button" data-ok="modal" class="sui-btn btn-primary btn-large edit-dish-btn">保存</button> 
+				<button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+		   </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script type="text/javascript">
+	seajs.use('../js/cookbook',function(dk){
+		$(function(){
+			dk.init();
+		});
+	})
+</script>

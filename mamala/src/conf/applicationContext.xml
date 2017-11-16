@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+<!-- [0]=========================数据源配置================================ -->
+    <bean id="defaultLobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" lazy-init="true" />
+
+    <!--db 加密配置文件-->
+    <bean id="propertyConfigurer" class="com.mamala.common.util.EncryptablePropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:conf/db.properties"/>
+        <property name="fileEncoding" value="UTF-8"/>
+    </bean>
+
+    <!-- [0]=========================数据源配置,使用阿里巴巴的druid================================ -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url"
+                  value="jdbc:mysql://172.24.131.200:3306/mamala?autoReconnect=true&amp;autoReconnectForPools=true&amp;useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+        <!-- 正式部署使用 -->
+<!--        <property name="driverClassName" value="${dataSource.driverClassName}"/>
+        <property name="url" value="${dataSource.url}"/>
+        <property name="username" value="${dataSource.username}"/>
+        <property name="password" value="${dataSource.password}"/>-->
+        <!--配置过滤-->
+        <property name="filters" value="stat"/>
+        <!-- 配置初始化大小 -->
+        <property name="initialSize" value="1" />
+        <!-- 配置初始化最大 连接数 -->
+        <property name="maxActive" value="100" />
+        <!-- 配置初始化最小连接数 -->
+        <property name="minIdle" value="1" />
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="60000" />
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <!-- 检测连接是否有效的SQL -->
+        <property name="validationQuery" value="SELECT 'x'" />
+        <property name="testWhileIdle" value="true" />
+        <property name="testOnBorrow" value="false" />
+        <property name="testOnReturn" value="false" />
+        <!-- MySQL不需要做PSCache,只有Oracle/DB2/SQL Server之类支持游标的数据库才需要配置成true -->
+        <property name="poolPreparedStatements" value="false" />
+        <!-- 如果是Oracle/DB2/SQL Server之类支持游标的数据库需要加上一下配置 -->
+        <!-- <property name="maxPoolPreparedStatementPerConnectionSize" value="50"
+            /> -->
+    </bean>
+
+    <!--自动装配-->
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <!-- 增加事务管理 add by chenhx 2013-11-30 -->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <tx:advice id="userTxAdvice" transaction-manager="txManager">
+      <tx:attributes>
+	      <tx:method name="delete*" propagation="REQUIRED" read-only="false" 
+	                            rollback-for="Exception"/>
+	      <tx:method name="add*" propagation="REQUIRED" read-only="false" 
+	                            rollback-for="Exception"/>
+	      <tx:method name="update*" propagation="REQUIRED" read-only="false" 
+	                            rollback-for="Exception"/>
+	      
+	      <tx:method name="change*" propagation="REQUIRED" read-only="false" 
+	                            rollback-for="Exception"/>
+	      <tx:method name="move*" propagation="REQUIRED" read-only="false" 
+	                            rollback-for="Exception"/>
+	      <tx:method name="edit*" propagation="REQUIRED" read-only="false" 
+	                            rollback-for="Exception"/>
+      </tx:attributes>
+    </tx:advice>
+  
+    <aop:config>    
+       <aop:pointcut id="pc" expression="execution(public * com.mamala.market.service.*.*.*(..))" /> <!--把事务控制在Service层-->
+       <aop:advisor pointcut-ref="pc" advice-ref="userTxAdvice" />
+     </aop:config>
+
+
+    <!--使用mybatis-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:conf/mybatisConfig.xml"/>
+        <property name="mapperLocations" value="classpath:conf/mapper/**/*.xml"/>
+    </bean>
+
+    <!--扫描某个package进行实例-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.mamala.market.mapper"/>
+    </bean>
+
+
+    <!--使用注解方式-->
+    <!--dao-->
+    <context:component-scan base-package="com.mamala.market.dao"/>
+    <!--service-->
+    <context:component-scan base-package="com.mamala.market.service"/>
+  
+</beans>

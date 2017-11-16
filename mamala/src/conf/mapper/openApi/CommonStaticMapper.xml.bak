@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruijie.rbis.mapper.openApi.CommonStaticMapper">
+
+    <select id="qryUserName" resultType="java.lang.Integer">
+        SELECT  COUNT(*) FROM  t_rbis_user WHERE userName=#{userName} and state=1
+    </select>
+    
+    <select id="qryUserPasswd" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM  t_rbis_user WHERE userName=#{userName} and password=#{password} and state=1
+    </select>
+
+    <!--获取建筑物的统计信息-->
+    <select id="getBuildingStatic" resultType="com.ruijie.rbis.pojo.openApi.BuildingStatic">
+        SELECT
+            building_id,
+            building_name,
+            all_num,
+            all_mac_num,
+            enter_num,
+            stay_num,
+            avg_stay_time,
+            new_num,
+            old_num,
+            online_num,
+            offline_num
+        FROM
+            t_report_mall_info
+        WHERE
+            building_id IN
+        <foreach collection="buildingIdList" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+            AND type = #{type}
+            AND aptime = #{aptime}
+    </select>
+
+    <!--获取楼层的统计信息-->
+    <select id="getFloorStatic" resultType="com.ruijie.rbis.pojo.openApi.FloorStatic">
+        SELECT
+            building_id,
+            building_name,
+            floor_id,
+            floor_name,
+            all_num,
+            all_mac_num,
+            enter_num,
+            stay_num,
+            avg_stay_time,
+            new_num,
+            old_num,
+            online_num,
+            offline_num
+        FROM
+            t_report_floor_info
+        WHERE
+            building_id IN
+        <foreach collection="buildingIdList" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+            AND type = #{type}
+            AND aptime = #{aptime}
+    </select>
+
+    <!--获取店铺的统计信息-->
+    <select id="getStoreStatic" resultType="com.ruijie.rbis.pojo.openApi.StoreStatic">
+        SELECT
+            building_id,
+            building_name,
+            floor_id,
+            floor_name,
+            store_id,
+            store_name,
+            all_num as all_num,
+            all_mac_num as all_mac_num,
+            enter_num as enter_num,
+            stay_num as stay_num,
+            avg_stay_time as avg_stay_time,
+            new_num as new_num,
+            old_num as old_num,
+            online_num as online_num,
+            offline_num as offline_num
+        FROM
+            t_report_store_info
+        WHERE
+            building_id IN
+        <foreach collection="buildingIdList" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+            AND type = #{type}
+            AND aptime = #{aptime}
+    </select>
+
+    <!--根据merchantId获取buildingId-->
+    <select id="getBuildingIdWithMerchant" resultType="java.lang.Integer">
+        SELECT
+            building_id
+        FROM
+            t_buildings_info
+        <where>
+            <if test="merchantId != -1">
+                merchant_id=#{merchantId}
+            </if>
+        </where>
+    </select>
+
+    <!--查询用户的权限信息-->
+    <select id="getUserInfo" resultType="com.ruijie.rbis.pojo.openApi.UserSimple">
+        SELECT
+            t1.user_id,
+            t1.merchant_id,
+            t1.role_id,
+            t1.level,
+            t1.parent_level,
+            t1.parent_id,
+            t2.userName,
+            t2.password
+        FROM
+            t_user_relate_info t1
+            INNER  JOIN t_rbis_user t2 ON t1.user_id = t2.userid
+                                          AND t2.userName = #{userName}
+                                          AND t2.password = #{password}
+                                          AND t2.state = 1
+    </select>
+
+</mapper>

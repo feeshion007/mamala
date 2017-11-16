@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mamala.market.mapper.dish.DishMapper">
+
+    <select id="qryDishList" resultType="com.mamala.market.pojo.dish.Dish" parameterType="com.mamala.market.pojo.dish.Dish">
+  		SELECT dish_id dishId,dish_name dishName,dish_name_eng dishNameEng,dish_name_pinyin dishNamePinyin,dish_type_id dishTypeId,dish_type_name dishTypeName,
+  		dish_alias dishAlias,dish_price dishPrice,dish_cost dishCost,dish_unit dishUnit,dish_canbe_set dishCanbeSet,dish_taste dishTaste,dish_remarks dishRemarks,
+  		dish_disabled dishDisabled,dish_canbe_discount dishCanbeDisCount,dish_canbe_give dishCanbeGive from t_dish
+  		where 1=1 
+  		<if test="dishId > 0">
+           and dish_id = #{dishId}
+        </if>
+        <if test="dishTypeId > 0">
+           and dish_type_id = #{dishTypeId}
+        </if>
+        <if test="qryStore !=null and qryStore!=''">
+           and store_id in (#{qryStore})
+        </if>
+        <if test="qryKey !=null and qryKey!=''">
+           and dish_name like CONCAT('%','${qryKey}','%' )
+        </if>
+         <if test="length > 0">
+           limit #{start},#{length}
+        </if> 
+    </select>
+    
+    <select id="dishCount" resultType="java.lang.Integer" parameterType="com.mamala.market.pojo.dish.Dish">
+  		SELECT count(*) from t_dish where 1=1  
+  		 <if test="dishId > 0">
+           and dish_id = #{dishId}
+        </if>
+        <if test="dishTypeId > 0">
+           and dish_type_id = #{dishTypeId}
+        </if>
+        <if test="qryStore !=null and qryStore!=''">
+           and store_id in (#{qryStore})
+        </if>
+        <if test="qryKey !=null and qryKey!=''">
+           and dish_name like CONCAT('%','${qryKey}','%' )
+        </if> 
+     </select>
+    
+    <select id="findDishById" resultType="com.mamala.market.pojo.dish.Dish" parameterType="com.mamala.market.pojo.dish.Dish">
+  		SELECT dish_id dishId,dish_name dishName,dish_name_eng dishNameEng,dish_name_pinyin dishNamePinyin,dish_type_id dishTypeId,dish_type_name dishTypeName,
+  		dish_alias dishAlias,dish_price dishPrice,dish_cost dishCost,dish_unit dishUnit,dish_canbe_set dishCanbeSet,dish_taste dishTaste,dish_remarks dishRemarks,
+  		dish_disabled dishDisabled,dish_canbe_discount dishCanbeDisCount,dish_canbe_give dishCanbeGive from t_dish
+  		where 1=1  
+           and dish_id = #{dishId}   
+    </select>
+    
+    <select id="qryDishTypeUnitPrice" resultType="float">
+  		SELECT sum(b.dish_price) FROM `t_set_dish_relation` a ,t_dish b
+		where a.dish_id = b.dish_id   
+		<if test="dishTypeId > 0">
+           and a.dish_type_id = #{dishTypeId}
+        </if> 
+    </select>
+
+	<update id="updateDish" parameterType="com.mamala.market.pojo.dish.Dish">
+        UPDATE t_dish
+        SET dish_name = #{dishName} 
+        , dish_name_eng = #{dishNameEng} 
+        , dish_name_pinyin = #{dishNamePinyin} 
+        , dish_type_id = #{dishTypeId} 
+        , dish_type_name = #{dishTypeName} 
+        , dish_alias = #{dishAlias} 
+        , dish_price = #{dishPrice} 
+         , dish_cost = #{dishCost} 
+        , dish_unit = #{dishUnit} 
+        , dish_canbe_set = #{dishCanbeSet} 
+        , dish_taste = #{dishTaste} 
+        , dish_remarks = #{dishRemarks} 
+        , dish_disabled = #{dishDisabled} 
+        , dish_canbe_discount = #{dishCanbeDiscount} 
+        , dish_canbe_give = #{dishCanbeGive} 
+        , modify_time = now()
+  		where dish_id=#{dishId}
+    </update>
+    
+    <insert id="addDish" parameterType="com.mamala.market.pojo.dish.Dish"
+            useGeneratedKeys="true" keyProperty="dishId" keyColumn="dish_id">
+        INSERT INTO t_dish (dish_name,dish_name_eng,dish_name_pinyin,dish_type_id,dish_type_name,dish_alias,dish_price,dish_cost,dish_unit,dish_canbe_set,dish_taste,dish_remarks,dish_disabled,dish_canbe_discount,dish_canbe_give,store_id,create_time,modify_time)
+        VALUES (#{dishName} ,#{dishNameEng} , #{dishNamePinyin},#{dishTypeId} , #{dishTypeName} ,#{dishAlias} , #{dishPrice} , #{dishCost} ,#{dishUnit} ,#{dishCanbeSet}  ,#{dishTaste} ,#{dishRemarks} ,#{dishDisabled} ,#{dishCanbeDiscount}  ,#{dishCanbeGive} ,#{storeId},now(), now())
+    </insert>
+    
+    <delete id="deleteDish">
+        DELETE FROM t_dish
+        WHERE dish_id = #{dishId}
+    </delete>
+    
+    
+    <select id="qryDishTypeList" resultType="com.mamala.market.pojo.dish.DishType" parameterType="com.mamala.market.pojo.dish.DishType">
+  		SELECT dish_type_id dishTypeId,dish_type dishType,dish_unit_price dishUnitPrice,dish_type_set dishTypeSet,dish_type_name dishTypeName,dish_using_range dishUsingRange,status,user_id userId from t_dish_type
+  		where 1=1 
+  		 <if test="dishTypeSet > 0">
+           and dish_type_set = #{dishTypeSet}
+        </if>
+        <if test="status > 0">
+           and status = #{status}
+        </if>
+        <if test="qryStore !=null and qryStore!=''">
+           and store_id in (#{qryStore})
+        </if> 
+    </select>
+     <select id="findDishTypeById" resultType="com.mamala.market.pojo.dish.DishType" parameterType="com.mamala.market.pojo.dish.DishType">
+  		SELECT dish_type_id dishTypeId,dish_type dishType,dish_unit_price dishUnitPrice,dish_type_set dishTypeSet,dish_type_name dishTypeName,dish_using_range dishUsingRange,status,user_id userId from t_dish_type
+  		where 1=1  
+           and dish_type_id = #{dishTypeId} 
+    </select>
+
+	<update id="updateDishType" parameterType="com.mamala.market.pojo.dish.DishType">
+        UPDATE t_dish_type
+        SET dish_type = #{dishType} 
+        , dish_type_name = #{dishTypeName} 
+        , dish_using_range = #{dishUsingRange} 
+        , status = #{status} 
+        , user_id = #{userId}  
+        , dish_type_set = #{dishTypeSet} 
+        , dish_unit_price = #{dishUnitPrice} 
+        , modify_time = now()
+  		where dish_type_id=#{dishTypeId}
+    </update>
+    
+    <insert id="addDishType" parameterType="com.mamala.market.pojo.dish.DishType"
+            useGeneratedKeys="true" keyProperty="dishTypeId" keyColumn="dish_type_id">
+        INSERT INTO t_dish_type (dish_type,dish_type_name,dish_using_range,status,dish_type_set,user_id,store_id,dish_unit_price,create_time,modify_time)
+        VALUES (#{dishType} ,#{dishTypeName} , #{dishUsingRange},#{status} , #{dishTypeSet} , #{userId},#{storeId}, #{dishUnitPrice} ,now(), now())
+    </insert>
+    
+    <delete id="deleteDishType">
+        DELETE FROM t_dish_type
+        WHERE dish_type_id = #{dishTypeId}
+    </delete>
+    
+    
+    <select id="qrySetDishRelation" resultType="com.mamala.market.pojo.dish.SetDishRelation" parameterType="com.mamala.market.pojo.dish.SetDishRelation">
+  		SELECT b.set_id setId,a.dish_id dishId,a.dish_name dishName,b.dish_type_id dishTypeId,a.dish_type_id realTypeId,b.dish_type_name dishTypeName,b.dish_count count,a.dish_price dishPrice,a.dish_unit dishUnit
+  		from (select dish_id,dish_name,dish_price,dish_unit,dish_type_id from t_dish where 1=1 and  dish_disabled = 2
+  		<if test="dishCanbeSet > 0">
+	           and dish_canbe_set = #{dishCanbeSet}
+	        </if> 
+	        <if test="dishCanbeGive > 0">
+	           and dish_canbe_give = #{dishCanbeGive}
+	        </if>
+	         <if test="qryStore !='' and qryStore!=null">
+	           and store_id = #{qryStore}
+	        </if>
+          ) a  
+		LEFT JOIN (select s.*, t.dish_type_name from t_set_dish_relation s ,t_dish_type t where  s.dish_type_id =t.dish_type_id
+		 <if test="dishTypeSet > 0">
+	            and t.dish_type_set=#{dishTypeSet}
+	     </if>
+	      ) b
+		on a.dish_id = b.dish_id 
+  		<if test="dishTypeId >= 0">
+           and b.dish_type_id = #{dishTypeId}
+        </if> 
+        
+    </select>
+
+	<update id="updateSetDishRelation" parameterType="com.mamala.market.pojo.dish.DishType">
+        UPDATE t_set_dish_relation
+        SET dish_type_id = #{dishTypeId} 
+        , dish_id = #{dishId} 
+        , dish_name = #{dishName}  
+        , dish_count = #{count}  
+  		where set_id=#{setId}
+    </update>
+    
+    <insert id="addSetDishRelation" parameterType="com.mamala.market.pojo.dish.SetDishRelation"
+            useGeneratedKeys="true" keyProperty="setId" keyColumn="set_id">
+        INSERT INTO t_set_dish_relation (dish_type_id ,dish_id ,dish_count,dish_name)
+        VALUES (#{dishTypeId} ,#{dishId} , #{count} , #{dishName})
+    </insert>
+    
+    <delete id="deleteSetDishRelation">
+        DELETE FROM t_set_dish_relation
+        where set_id=#{setId}
+    </delete>
+    
+</mapper>

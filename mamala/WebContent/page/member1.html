@@ -1,0 +1,357 @@
+
+<style>
+	.member-head {color: #000;background: #e6e6e6;height: 40px;border: 1px solid #eee;font-size: 14px;font-weight: 600;line-height: 40px;padding-left: 10px;}
+    .member-type-box{width: 300px;margin-right: 1px;border-right: 2px solid #dedede;}
+	.member-list-box{  width: 940px;height: 676px;position: relative;}
+	.pagination-position{position: absolute;bottom:0px;right: 10px;margin: 10px;}
+	.new-type-row{border: none; border-bottom: solid 1px #1299ec;background: #ffc;height: 100%;width: 100%;}
+	.new-row{border: none; border-bottom: solid 1px #1299ec;background: #ffc;height: 100%;width: 100%;}
+	.memberTips{color:red}
+	div.dataTables_wrapper2 {
+        width: 800px;
+        height:540px;
+        margin: 0 auto;
+    } 
+    #edit-memberGroup-panel .modal-body input{width:300px}  
+    #edit-member-panel .control-group{float:left;}
+    #edit-member-panel .modal-body input{width:160px}
+    #edit-member-panel .modal-body textarea{width:430px}
+    #edit-member-panel .modal-body select {width:140px;height:80px;}
+    .sui-dropup .caret::before, .sui-dropdown .caret::before {
+       content: "▼";
+     }
+   
+   .title{height:40px;line-height:40px;text-align:center;background: #dedede;}
+   .title i{font-size: 16px;font-style: normal;border: 1px solid #fff;width: 20px;height: 20px;display: inline-block;line-height: 20px;border-radius: 4px;float: right;margin-right: 10px;margin-top: 8px;cursor: pointer;}
+   .title i:hover{border-color:blue;}
+   .recharge{position: absolute;height: 390px;width: 100%;bottom: 41px;box-shadow:0 0 3px;}
+   .recharge .member-info{height:60px; border-bottom:1px dashed #aeaeae;}
+   .recharge .member-info p{margin-top:8px;margin-bottom:5px;margin-left:20px;}
+   .recharge .member-info p em{display:inline-block;width:150px;font-style:normal;text-align: center;}
+   .recharge .member-info p input{height:20px;border-radus:2px;}
+   .effect{-webkit-transform: translateY(50%);-moz-transform: translateY(50%);-ms-transform: translateY(50%);transform: translateY(50%);opacity: 0;
+	-webkit-transition: all 0.3s;-moz-transition: all 0.3s;transition: all 0.3s;}
+	.effect-show.effect{
+		-webkit-transform: translateY(0);-moz-transform: translateY(0);-ms-transform: translateY(0);transform: translateY(0);opacity: 1;
+	}
+   .give-away{position: absolute;border-top: 1px solid #867a7a;height: 500px;width: 100%;bottom: 41px;border-top: 1px solid #867a7a;}
+
+   .btn{width:100px;height:40px;border:1px solid;float:left;font-size:14px;line-height:40px;text-align:center;border:1px solid #aeaeae;cursor:pointer;background:#e7e7e7e;}
+   .give-away-list{height:200px;overflow:scroll;}
+   
+   .give-away .item {height: 60px; width: 90px;margin: 5px;line-height: 60px;text-align: center; border: 1px solid #2087e1;cursor: pointer;
+    border-radius: 5px; background: #ded;}
+    .give-away-already{height:210px;overflow:scroll;}
+    ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color:#fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #dedede;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+   
+</style>
+<div class='member-type-box fl'>
+	<div class='member-head'>会员类型
+		<div class='fr new-member-type-btn'>
+			<a href="javascript:void(0);" data-toggle="modal" data-target="#edit-memberGroup-panel" data-keyboard="false" style="background-color:#4cb9fc;color:#fff" class="sui-btn btn-bordered btn-xlarge btn-primary new-memberGroup-btn">新增品类</a>
+		</div>
+	</div>
+	<table id="member-group-tb" class="display" cellspacing="0" width="100%">
+	  <thead>
+	    <tr>
+	      <th>类型名称</th> 
+	      <th>折扣</th> 
+	      <th>操作</th>
+	    </tr>
+	  </thead>
+	  <tbody> 
+	  </tbody>
+	</table>
+</div>
+<div class='member-list-box fl'>
+	<div class='member-head'>会员列表 
+		<div class='fr'>
+			<a href="javascript:void(0);"  data-toggle="modal" data-target="#edit-member-panel" data-keyboard="false" style="background-color:#4cb9fc;color:#fff" class="sui-btn btn-bordered btn-xlarge btn-primary new-member-btn">新增会员</a>
+		</div>
+		<div class="fr memberTips"></div>
+	</div>
+	<table id="member-tb" class="display nowrap" cellspacing="0" width="100%" >
+	  <thead>
+	    <tr>
+	      <th>操作</th>
+	      <th>会员编号</th>
+	      <th>会员名称</th>
+	      <th>会员卡类型</th>
+	      <th>会员卡号</th>
+	      <th>余额（元）</th>
+	      <th>是否停用</th>
+	      <th>会员手机号</th>
+	      <th>性别</th>
+	      <th>生日</th>	     
+	    </tr>
+	  </thead>
+	  <tbody> 
+	     
+	  </tbody>
+	</table>
+	<div class='recharge effect'>
+		<div class='title'>会员卡充值<i>X</i></div>
+		<div class='member-info'>
+			<p><em>会员名称:</em>陈小姐</p>
+			<p><em>会员卡号:</em>20000001</p>
+		</div>
+		<div class='member-info' style='height:90px;'>
+			<p><em>付款金额:</em><input type='text'></p>
+			<p><em>付款方式:</em>
+				<label><input type='radio' name='rechagetype'>现金支付</label>
+				<label><input type='radio' name='rechagetype'>在线支付</label>
+				<label><input type='radio' name='rechagetype'>微信支付</label>
+				<label><input type='radio' name='rechagetype'>支付宝支付</label>
+				<label><input type='radio' name='rechagetype'>银行卡</label>
+			</p>
+			<p><em>充值优惠:</em>无优惠信息</p>
+		</div>
+		<div class='member-info'>
+			<p><em>充值金额:</em><input type='text'></p>
+			<p><em>卡内余额:</em><input type='text' readonly='true'></p>
+		</div>
+		<div class='member-info'>
+			<p><em>备注:</em><input type='area' style="width:320px;height:40px;"></p>
+		</div>
+		<div style='height:40px;width: 214px;margin: 1px auto;'>
+			<div class='btn' style='margin-right:10px;'>确定充值</div>
+			<div class='btn' >取消关闭</div>
+		</div>
+	</div>
+	
+	<div class='give-away effect'>
+		<div class='title'>赠送菜品 <i>X</i></div>
+		<div class='give-away-list'>
+			<div class='item fl'>赠送菜一</div><div class='item fl'>赠送菜二</div><div class='item fl'>赠送菜二</div><div class='item fl'>赠送菜二</div>
+			<div class='item fl'>赠送菜一</div><div class='item fl'>赠送菜二</div><div class='item fl'>赠送菜二</div><div class='item fl'>赠送菜二</div>
+			<div class='item fl'>赠送菜一</div><div class='item fl'>赠送菜二</div><div class='item fl'>赠送菜二</div><div class='item fl'>赠送菜二</div>
+			<div class='item fl'>赠送菜一</div><div class='item fl'>赠送菜二</div><div class='item fl'>赠送菜二</div><div class='item fl'>赠送菜二</div>
+		</div>
+		<div class='title'>已赠送菜品</div>
+		<div class='give-away-already'><div class='item fl'>已赠送菜一</div><div class='item fl'>已赠送菜二</div><div class='item fl'>已赠送菜二</div><div class='item fl'>已赠送菜二</div></div>
+	</div>
+</div>
+
+<div style="width:490px;margin-left:-300px;" id="edit-memberGroup-panel" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">会员类型</h4>
+      </div>
+      <div class="modal-body">
+				<div style="height: 190px;margin:6px 0px 0 25x">
+					<form class="sui-form form-horizontal sui-validate edit-memberGroup-form" target="">
+						<div class="control-group">
+							<label class="control-label" >
+								类型编号：
+							</label>
+							<div class="controls">
+								<input type="text" disabled='true' id="group_id" name="groupId" placeholder="员工号自动生成" >
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<label class="control-label" >
+								类型名称：
+							</label>
+							<div class="controls">
+								<input type="text"  id="group_name" name="groupName" placeholder="员工号自动生成" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" >
+								上级类型：
+							</label>
+							<div class="controls">
+								<input style="width:300px"  data-toggle="autocomplete" autocomplete=off id="up_group_name" name="upGroupName" placeholder="输入..." class="input-xlarge" type="text">
+								<input id="up_group_id" name="upGroupId"   type="hidden"> 
+							</div>
+						</div>	
+						<div class="control-group">
+							<label  class="control-label">
+								会员折扣：
+							</label>
+							<div class="controls">
+								<input type="text"  id="rebate" name="rebate" placeholder="可输入会员代码" >
+							</div>
+						</div>
+						 
+					</form>
+				</div>
+			</div>
+		   <div class="modal-footer">
+				<button type="button" data-ok="modal" class="sui-btn btn-primary btn-large edit-memberGroup-btn">保存</button> 
+				<button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+		   </div>
+    </div>
+  </div>
+</div>
+<!-- 会员类型弹出框 -->
+
+
+
+<div style="width:610px;margin-left:-300px;" id="edit-member-panel" tabindex="-1" role="dialog" data-hasfoot="true" class="sui-modal hide fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+        <h4 id="myModalLabel" class="modal-title">会员管理</h4>
+      </div>
+      <div class="modal-body">
+				<div style="height: 240px;margin:6px 0px 0 0px">
+					<form class="sui-form form-horizontal sui-validate edit-member-form" target="">
+						<div class="control-group">
+							<label class="control-label" >
+								会员编号：
+							</label>
+							<div class="controls">
+								<input type="text" disabled='true' id="member_id" name="memberId" placeholder="会员编号自动生成" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" >
+								会员名称：
+							</label>
+							<div class="controls">
+								<input type="text"  id="member_name" name="memberName" placeholder="请输入会员名称" >
+							</div>
+						</div>		
+						<div class="control-group">
+							<label class="control-label" >
+								手机号：
+							</label>
+							<div class="controls">
+								<input type="text" id="phone" name="phone" placeholder="请输入会员代码" >
+							</div>
+						</div> 		
+						<div class="control-group">
+							<label class="control-label" >
+								微信号：
+							</label>
+							<div class="controls">
+								<input type="text" id="weixin" name="weixin" placeholder="请输入会员代码" >
+							</div>
+						</div> 
+							
+						<div class="control-group">
+							<label class="control-label" >
+								会员类型：
+							</label>
+							<div class="controls">
+								<input style="width:160px"  data-toggle="autocomplete" autocomplete="off" id="member_group_name" name="memberGroupName" placeholder="输入..." class="input-xlarge" type="text">
+								<input id="member_group_id" name="memberGroupId"   type="hidden"> 
+							</div>
+						</div>		
+						<div class="control-group">
+							<label class="control-label" >
+								会员卡号：
+							</label>
+							<div class="controls">
+								<input type="text" id="card_number" name="cardNumber" placeholder="请输入会员代码" >
+							</div>
+						</div> 
+						<div class="control-group">
+							<label class="control-label" >
+								余额：
+							</label>
+							<div class="controls">
+								<input type="text"  id="remain_money" name="remainMoney" placeholder="请输入菜别名" >
+							</div>
+						</div> 
+						 
+						
+						<div class="control-group">
+							 <label for="inputGender" class="control-label">是否禁用：</label>
+						    <div class="controls">
+							      <span class="sui-dropdown dropdown-bordered select">
+								      <span class="dropdown-inner">
+									      <a  style="width:151px" role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
+										      <input  id="disabled" name="disabled"  type="hidden"><i class="caret"></i>
+										      <span class="disabled-select-context">请选择</span>
+									      </a>
+								          <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu disabled-select-menu"> 
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="2">启用</a></li>
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">禁用</a></li> 
+								          </ul>
+							          </span>
+						          </span>
+					         </div>
+						</div> 
+						 <div class="control-group">
+							<label for="inputGender" class="control-label">性别：</label>
+						    <div class="controls">
+							      <span class="sui-dropdown dropdown-bordered select">
+								      <span class="dropdown-inner">
+									      <a  style="width:151px" role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
+										      <input  id="sex" name="sex"  type="hidden"><i class="caret"></i>
+										      <span class="sex-select-context">请选择</span>
+									      </a>
+								          <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu sex-select-menu"> 
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="2">男</a></li>
+								            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">女</a></li>
+								          </ul>
+							          </span>
+						          </span>
+					         </div>
+						</div>
+						  
+						<div class="control-group">
+							<label class="control-label" >
+								生日：
+							</label>
+							<div class="controls">
+								<input type="text" id="birthday" name="birthday" placeholder="请输入会员成本" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" >
+								联系地址：
+							</label>
+							<div class="controls">
+								<textarea id="address" name="address" placeholder="备注"
+									data-rules="required"></textarea>
+							</div>
+						</div>	
+						<div class="control-group">
+							<label  class="control-label">
+								备注说明：
+							</label>
+							<div class="controls">
+								<textarea id="remarks" name="remarks" placeholder="备注"
+									data-rules="required"></textarea>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		   <div class="modal-footer">
+				<button type="button" data-ok="modal" class="sui-btn btn-primary btn-large edit-member-btn">保存</button> 
+				<button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">关闭</button>
+		   </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script type="text/javascript">
+	seajs.use('../js/member',function(dk){
+		$(function(){
+			dk.init();
+		});
+	})
+</script>

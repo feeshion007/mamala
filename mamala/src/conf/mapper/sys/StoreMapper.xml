@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mamala.market.mapper.sys.StoreMapper">
+
+    <select id="qryStoreInfoList" resultType="com.mamala.market.pojo.sys.StoreInfo" parameterType="com.mamala.market.pojo.sys.StoreInfo">
+  		SELECT store_id as storeId, store_name as storeName, store_grade grade, store_address address,store_leader leader,store_phone phone,store_open_time open,store_close_time close from t_store_info
+  		where 1=1
+  		<if test="userId">
+  		  and user_id =#{userId}
+  		</if>
+  		<if test="qryStore !=null and qryStore!=''">
+           or store_id in (#{qryStore})
+        </if>
+    </select>
+
+	<update id="updateStoreInfo" parameterType="com.mamala.market.pojo.sys.StoreInfo">
+        UPDATE t_store_info
+        SET store_name = #{storeName} 
+        , store_grade = #{grade} 
+        , store_address = #{address} 
+        , store_leader = #{leader} 
+        , store_phone = #{phone} 
+        , store_open_time = #{open} 
+        , store_close_time = #{close} 
+  		where store_id=#{storeId}
+    </update>
+    
+    <insert id="addStoreInfo" parameterType="com.mamala.market.pojo.sys.StoreInfo"
+            useGeneratedKeys="true" keyProperty="storeId" keyColumn="store_id">
+        INSERT INTO t_store_info (store_name, store_grade, store_address,store_leader,store_phone,store_open_time,store_close_time,user_id)
+        VALUES (#{storeName}, #{grade}, #{address}, #{leader}, #{phone}, #{open}, #{close},#{userId})
+    </insert>
+    
+    <delete id="deleteStoreInfo">
+        DELETE FROM t_store_info
+        WHERE store_id = #{storeId}
+    </delete>
+    
+    
+    <select id="qryStaffList" resultType="com.mamala.market.pojo.sys.Staff" parameterType="com.mamala.market.pojo.sys.Staff">
+  		SELECT user_id staffId,name staffName,user_name staffAccount, role_id staffRole, position staffType,phone staffPhone,store_id storeId,store_name storeName from t_user
+  		where 1=1 and state=1
+  		<if test="staffRole > 0">
+           and role_id = #{staffRole}
+        </if>
+        <if test="staffType > 0">
+           and position = #{staffType}
+        </if>
+  		<if test="staffId > 0">
+           and user_id = #{staffId}
+        </if>
+        <if test="storeId >0">
+           and store_id = #{storeId}
+        </if>
+    </select>
+
+	<update id="updateStaff" parameterType="com.mamala.market.pojo.sys.Staff">
+        UPDATE t_user
+        SET  name = #{staffName} 
+        , user_name = #{staffAccount} 
+        , role_id = #{staffRole} 
+        , position = #{staffType} 
+        , phone = #{staffPhone} 
+        , store_id = #{storeId} 
+        , store_name = #{storeName}  
+  		where user_id=#{staffId}
+    </update>
+    
+    <insert id="addStaff" parameterType="com.mamala.market.pojo.sys.Staff"
+            useGeneratedKeys="true" keyProperty="staffId" keyColumn="staff_id">
+        INSERT INTO t_user (name,user_name,role_id,position,phone,store_id,store_name,password,state)
+        VALUES (#{staffName}, #{staffAccount}, #{staffRole}, #{staffType}, #{staffPhone}, #{storeId}, #{storeName},md5(#{staffAccount}),1)
+    </insert>
+    
+    <insert id="addUserRoleRelation" parameterType="com.mamala.market.pojo.sys.UserRoleRelation"
+            useGeneratedKeys="true" keyProperty="storeId" keyColumn="store_id">
+        INSERT INTO t_user_relate_info (user_id,merchant_id,role_id,level,parent_level,parent_id)
+        VALUES (#{userId}, #{merchantId}, #{roleId}, #{level}, #{parentLevel}, #{parentId})
+    </insert>
+    
+    <update id="updateUserRoleRelation" parameterType="com.mamala.market.pojo.sys.UserRoleRelation">
+        UPDATE t_user_relate_info
+        SET   role_id = #{roleId} 
+        , parent_id = #{parentId} 
+        , level = #{level} 
+        , parent_level = #{parentLevel}  
+  		where user_id=#{userId} and merchant_id=#{merchantId}
+    </update>
+    
+    <delete id="deleteStaff">
+        DELETE FROM t_user
+        WHERE user_id = #{staffId}
+    </delete>
+    <delete id="deleteUserRoleRelation">
+        DELETE FROM t_user_relate_info
+        WHERE user_id = #{userId}
+    </delete>
+    
+</mapper>
